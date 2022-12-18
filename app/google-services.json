@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "90698750879",
+    "project_id": "financia-jaya",
+    "storage_bucket": "financia-jaya.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90698750879:android:904535d83ee646b599fbaa",
+        "android_client_info": {
+          "package_name": "com.jaya.financia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90698750879-0t0prplrkmv7d40cl2k1iu2iq4m3j9qj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBhNjUMPfddL7ngBJJ0Pbhy3ABydKInzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90698750879-0t0prplrkmv7d40cl2k1iu2iq4m3j9qj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
