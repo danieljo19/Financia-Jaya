@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
         lmData = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
         binding.rvData.setLayoutManager(lmData);
         retrieveData();
+
+        binding.fabTambah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void retrieveData() {
@@ -60,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
         tampilData.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                binding.progressBar.setVisibility(View.GONE);
                 int kode = response.body().getKode();
                 String pesan = response.body().getPesan();
 
-                Toast.makeText(MainActivity.this, "Kode : " + kode +" | Pesan " + pesan, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Kode : " + kode +" | Pesan " + pesan, Toast.LENGTH_SHORT).show();
 
                 listData = response.body().getData();
 

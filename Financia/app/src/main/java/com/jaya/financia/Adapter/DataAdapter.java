@@ -36,7 +36,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DataModel data = listData.get(position);
 
-        holder.tvName.setText(data.getNama());
+        holder.tvName.setText(data.getName());
         holder.tvType.setText(data.getType());
         holder.tvTotal.setText(data.getTotal());
         holder.tvDate.setText(data.getDate());
