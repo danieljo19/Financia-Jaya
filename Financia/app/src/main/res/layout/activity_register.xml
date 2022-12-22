@@ -80,30 +80,22 @@
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/design_default_color_primary"
             android:text="Sign Up"
-            android:textColor="@color/white"
             android:layout_marginTop="16dp"/>
 
         <Button
             android:id="@+id/btn_resetpassword"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:text="Forgot your password"
-            android:textAllCaps="false"
-            android:layout_gravity="center_horizontal"/>
+            android:text="Forgot your password"/>
 
         <Button
             android:id="@+id/btn_login"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:text="Already registered, Login Me!"
-            android:textAllCaps="false"
-            android:layout_gravity="center_horizontal"/>
+            android:text="Already registered, Login Me!"/>
     </LinearLayout>
 
     <ProgressBar

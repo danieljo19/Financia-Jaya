@@ -16,9 +16,9 @@
         <ImageView
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:src="@mipmap/ic_launcher"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="24dp"
+            android:src="@mipmap/ic_launcher" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
-                android:maxLines="1"/>
+                android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:maxLines="1"/>
+                android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -53,30 +53,22 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/design_default_color_primary"
-            android:text="Login"
-            android:textColor="@color/white"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:text="Login" />
 
         <Button
             android:id="@+id/btn_register"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:text="Not a member? Get registered in Financia now!"
-            android:textAllCaps="false"
-            android:layout_gravity="center_horizontal"/>
+            android:text="Not a member? Get registered in Financia now!" />
 
         <Button
             android:id="@+id/btn_resetpassword"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:text="Forgot your password"
-            android:textAllCaps="false"
-            android:layout_gravity="center_horizontal"/>
+            android:text="Forgot your password" />
     </LinearLayout>
 
     <ProgressBar
@@ -84,6 +76,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_login"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
