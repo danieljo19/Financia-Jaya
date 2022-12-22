@@ -41,20 +41,31 @@
 
     </com.google.android.material.chip.ChipGroup>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"
-        android:textSize="20sp" />
+        android:hint="Name">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_total"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Total"
-        android:inputType="number"
-        android:textSize="20sp" />
+        android:layout_marginTop="8dp"
+        android:hint="Total Amount">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <DatePicker
         android:id="@+id/datePicker"

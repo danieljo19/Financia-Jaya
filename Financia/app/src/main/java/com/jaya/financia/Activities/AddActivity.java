@@ -64,7 +64,7 @@ public class AddActivity extends AppCompatActivity {
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                name = binding.etName.getText().toString();
+                name = binding.etName.getEditText().getText().toString();
                 type = "";
                 if(binding.chipIncome.isChecked()) {
                     type = "In";
@@ -72,7 +72,7 @@ public class AddActivity extends AppCompatActivity {
                     type = "Out";
                 }
 
-                total = binding.etTotal.getText().toString();
+                total = binding.etTotal.getEditText().getText().toString();
 
                 int year = binding.datePicker.getYear();
                 int month = binding.datePicker.getMonth();
@@ -119,5 +119,17 @@ public class AddActivity extends AppCompatActivity {
                 Toast.makeText(AddActivity.this, "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
