@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jaya.financia.Model.DataModel;
 import com.jaya.financia.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>{
@@ -39,7 +42,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>{
         holder.tvName.setText(data.getName());
         holder.tvType.setText(data.getType());
         holder.tvTotal.setText(data.getTotal());
-        holder.tvDate.setText(data.getDate());
+        holder.tvDate.setText(data.getDate().toString());
     }
 
     @Override

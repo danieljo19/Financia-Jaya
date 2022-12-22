@@ -1,5 +1,6 @@
 package com.jaya.financia.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,10 +8,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
 import com.jaya.financia.Model.ResponseModel;
+import com.jaya.financia.R;
 import com.jaya.financia.databinding.ActivityAddBinding;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,28 +36,62 @@ public class AddActivity extends AppCompatActivity {
         binding = ActivityAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        binding.chipGroup.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChangeListener() {
+            @Override
+            public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
+                for (int i = 0; i < checkedIds.size(); i++) {
+                    Chip checkedChip = group.findViewById(checkedIds.get(i));
+                    String text = checkedChip.getText().toString();
+                    Toast.makeText(AddActivity.this, "Chip checked: " + text, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+//        binding.chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(ChipGroup chipGroup, int checkedId) {
+//                Chip checkedChip = chipGroup.findViewById(checkedId);
+//                if (checkedChip == null) {
+//                    // Tidak ada chip yang ditekan, tampilkan error
+//                    Toast.makeText(AddActivity.this, "Please select a chip!", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    String text = checkedChip.getText().toString();
+//                    Toast.makeText(AddActivity.this, "Chip checked: " + text, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 name = binding.etName.getText().toString();
-                type = binding.etType.getText().toString();
-                total = binding.etTotal.getText().toString();
-                date = binding.etDate.getText().toString();
+                type = "";
+                if(binding.chipIncome.isChecked()) {
+                    type = "In";
+                } else if(binding.chipOutcome.isChecked()) {
+                    type = "Out";
+                }
 
-                if (name.trim().equals("")) {
-                    binding.etName.setError("Nama harus diisi");
-                } else if (type.trim().equals("")) {
-                    binding.etType.setError("Tipe harus diisi");
-                } else if (total.trim().equals("")) {
-                    binding.etTotal.setError("Total harus diisi");
-                } else if (date.trim().equals("")) {
-                    binding.etDate.setError("Tanggal harus diisi");
+                total = binding.etTotal.getText().toString();
+
+                int year = binding.datePicker.getYear();
+                int month = binding.datePicker.getMonth();
+                int day = binding.datePicker.getDayOfMonth();
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(day, month, year);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                date = sdf.format(calendar.getTime());
+
+                // Cek apakah semua input telah diisi
+                if (name.isEmpty() && type.isEmpty() && total.isEmpty()) {
+                    // Tampilkan pesan error jika ada input yang belum diisi
+                    Toast.makeText(AddActivity.this, "Semua input harus diisi!", Toast.LENGTH_SHORT).show();
+                    return;
                 } else {
                     createData();
                 }
-                Intent intent = new Intent(AddActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+
             }
         });
     }
