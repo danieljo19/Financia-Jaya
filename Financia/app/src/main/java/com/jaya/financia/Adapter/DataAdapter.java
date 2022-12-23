@@ -1,6 +1,7 @@
 package com.jaya.financia.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,15 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>{
         DataModel data = listData.get(position);
 
         holder.tvName.setText(data.getName());
-        holder.tvType.setText(data.getType());
-        holder.tvTotal.setText(data.getTotal());
+        if(data.getType().equalsIgnoreCase("In")) {
+            holder.tvType.setText("Income");
+            holder.tvTotal.setText("+Rp" + data.getTotal());
+            holder.tvTotal.setTextColor(Color.parseColor("#54B435"));
+        } else {
+            holder.tvType.setText("Expenses");
+            holder.tvTotal.setText("-Rp" + data.getTotal());
+            holder.tvTotal.setTextColor(Color.parseColor("#FF1E1E"));
+        }
         holder.tvDate.setText(data.getDate().toString());
     }
 

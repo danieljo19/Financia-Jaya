@@ -10,12 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Material3.DynamicColors.Light"
+        android:theme="@style/Theme.Material3.DynamicColors.DayNight"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Activities.AddActivity"
             android:parentActivityName=".Activities.MainActivity"
-            android:theme="@style/Theme.Material3.DynamicColors.Light"
             android:exported="false" />
         <activity
             android:name=".Activities.ResetPasswordActivity"
@@ -31,7 +30,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

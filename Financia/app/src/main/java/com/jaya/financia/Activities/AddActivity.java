@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
 import com.jaya.financia.Model.ResponseModel;
@@ -36,30 +38,28 @@ public class AddActivity extends AppCompatActivity {
         binding = ActivityAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.chipGroup.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChangeListener() {
+        //Inisialisasi kalender
+        MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
+        materialDateBuilder.setTitleText("Select date");
+        final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
+
+        binding.btnDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
-                for (int i = 0; i < checkedIds.size(); i++) {
-                    Chip checkedChip = group.findViewById(checkedIds.get(i));
-                    String text = checkedChip.getText().toString();
-                    Toast.makeText(AddActivity.this, "Chip checked: " + text, Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                if(materialDatePicker.isAdded()) {
+                    return;
+                } else {
+                    materialDatePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
                 }
             }
         });
 
-//        binding.chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(ChipGroup chipGroup, int checkedId) {
-//                Chip checkedChip = chipGroup.findViewById(checkedId);
-//                if (checkedChip == null) {
-//                    // Tidak ada chip yang ditekan, tampilkan error
-//                    Toast.makeText(AddActivity.this, "Please select a chip!", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    String text = checkedChip.getText().toString();
-//                    Toast.makeText(AddActivity.this, "Chip checked: " + text, Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                binding.btnDatePicker.setText(materialDatePicker.getHeaderText());
+            }
+        });
 
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override

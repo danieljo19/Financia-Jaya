@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.elevation.SurfaceColors;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         lmData = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
         binding.rvData.setLayoutManager(lmData);
         retrieveData();
+
+        //getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(this));
 
         binding.fabTambah.setOnClickListener(new View.OnClickListener() {
             @Override

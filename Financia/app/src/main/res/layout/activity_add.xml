@@ -17,10 +17,30 @@
         android:textSize="22sp"
         android:textStyle="bold" />
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabContentStart="56dp"
+        app:tabMode="fixed">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Expenses" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Income" />
+
+    </com.google.android.material.tabs.TabLayout>
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_gravity="center"
         app:selectionRequired="true"
         app:singleSelection="true">
@@ -66,6 +86,16 @@
             android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_datePicker"
+        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Today"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
+        app:icon="@drawable/ic_calendar_filled_24" />
 
     <DatePicker
         android:id="@+id/datePicker"
