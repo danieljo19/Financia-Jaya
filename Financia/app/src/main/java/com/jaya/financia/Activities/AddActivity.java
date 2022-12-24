@@ -130,6 +130,8 @@ public class AddActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(AddActivity.this, MainActivity.class);
+        startActivity(intent);
         finish();
     }
 }
