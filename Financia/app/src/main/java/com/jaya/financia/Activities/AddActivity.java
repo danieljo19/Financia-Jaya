@@ -1,28 +1,22 @@
 package com.jaya.financia.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
 import com.jaya.financia.Model.ResponseModel;
-import com.jaya.financia.R;
 import com.jaya.financia.databinding.ActivityAddBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +24,7 @@ import retrofit2.Response;
 
 public class AddActivity extends AppCompatActivity {
     ActivityAddBinding binding;
-    private String name, type, total, date;
+    private String name, type, total, date, user_uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +32,21 @@ public class AddActivity extends AppCompatActivity {
         binding = ActivityAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //Inisialisasi kalender
-        MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
-        materialDateBuilder.setTitleText("Select date");
-        final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
+        getSupportActionBar().setTitle("New Transaction");
+
+        Bundle bundle = getIntent().getExtras();
+        user_uid = bundle.getString("user_uid");
+
+        // Mendapatkan tanggal saat ini
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        date = format.format(calendar.getTime());
+
+        // Inisialisasi kalender
+        MaterialDatePicker.Builder<Long> materialDateBuilder = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .setSelection(calendar.getTimeInMillis());
+        final MaterialDatePicker<Long> materialDatePicker = materialDateBuilder.build();
 
         binding.btnDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +63,8 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onPositiveButtonClick(Object selection) {
                 binding.btnDatePicker.setText(materialDatePicker.getHeaderText());
+                calendar.setTimeInMillis((Long) selection);
+                date = format.format(calendar.getTime());
             }
         });
 
@@ -71,34 +78,28 @@ public class AddActivity extends AppCompatActivity {
                 } else if(binding.chipOutcome.isChecked()) {
                     type = "Out";
                 }
-
                 total = binding.etTotal.getEditText().getText().toString();
 
-                int year = binding.datePicker.getYear();
-                int month = binding.datePicker.getMonth();
-                int day = binding.datePicker.getDayOfMonth();
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(day, month, year);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                date = sdf.format(calendar.getTime());
-
                 // Cek apakah semua input telah diisi
-                if (name.isEmpty() && type.isEmpty() && total.isEmpty()) {
+                if (name.isEmpty() || type.isEmpty() || total.isEmpty()) {
                     // Tampilkan pesan error jika ada input yang belum diisi
-                    Toast.makeText(AddActivity.this, "Semua input harus diisi!", Toast.LENGTH_SHORT).show();
-                    return;
+                    if (name.isEmpty()) {
+                        binding.etName.setError("What is it?");
+                    }
+                    if (total.isEmpty()) {
+                        binding.etTotal.setError("How much is it?");
+                    }
+                    Toast.makeText(AddActivity.this, "Please fill all the information.", Toast.LENGTH_SHORT).show();
                 } else {
                     createData();
                 }
-
             }
         });
     }
 
     private void createData() {
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
-        Call<ResponseModel> buatData = api.ardCreateData(name, type, total, date);
+        Call<ResponseModel> buatData = api.ardCreateData(name, type, total, date, user_uid);
 
         buatData.enqueue(new Callback<ResponseModel>() {
             @Override
@@ -107,16 +108,18 @@ public class AddActivity extends AppCompatActivity {
                     int kode = response.body().getKode();
                     String pesan = response.body().getPesan();
                     if(kode == 1) {
+                        binding.etName.getEditText().setText("");
+                        binding.etTotal.getEditText().setText("");
                         Toast.makeText(AddActivity.this, pesan, Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(AddActivity.this, "Response code : " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddActivity.this, "Response code: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(AddActivity.this, "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

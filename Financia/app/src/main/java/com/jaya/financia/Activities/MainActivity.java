@@ -6,14 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.material.elevation.SurfaceColors;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
@@ -36,11 +34,13 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapData;
     private RecyclerView.LayoutManager lmData;
     private List<DataModel> listData = new ArrayList<>();
+    private String user_uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        user_uid = mAuth.getUid();
 
         if(mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("user_uid", user_uid);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
             }
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void retrieveData() {
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
-        Call<ResponseModel> tampilData = api.ardRetrieveData();
+        Call<ResponseModel> tampilData = api.ardRetrieveData(user_uid);
 
         tampilData.enqueue(new Callback<ResponseModel>() {
             @Override
@@ -76,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
                 binding.progressBar.setVisibility(View.GONE);
                 int kode = response.body().getKode();
                 String pesan = response.body().getPesan();
-
-//                Toast.makeText(MainActivity.this, "Kode : " + kode +" | Pesan " + pesan, Toast.LENGTH_SHORT).show();
-
                 listData = response.body().getData();
 
                 adapData = new DataAdapter(listData, MainActivity.this);
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Gagal Menghubungi ke Server", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
     }

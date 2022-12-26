@@ -34,7 +34,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 String email = binding.etEmail.getText().toString();
 
                 if(TextUtils.isEmpty(email)) {
-                    binding.etEmail.setError("Enter your email address");
+                    binding.etEmail.setError("Enter your email address.");
                     return;
                 }
                 binding.progressBar.setVisibility(View.VISIBLE);
@@ -54,16 +54,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             }
         });
 
-        binding.btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent= new Intent(ResetPasswordActivity.this, RegisterActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        binding.btnLogin.setOnClickListener(new View.OnClickListener() {
+        binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent= new Intent(ResetPasswordActivity.this, LoginActivity.class);
@@ -71,5 +62,19 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

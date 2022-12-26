@@ -11,8 +11,9 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface APIRequestData {
-    @GET("retrieve.php")
-    Call<ResponseModel> ardRetrieveData();
+    @FormUrlEncoded
+    @POST("retrieve.php")
+    Call<ResponseModel> ardRetrieveData(@Field("user_uid") String user_uid);
 
     @FormUrlEncoded
     @POST("create.php")
@@ -20,6 +21,7 @@ public interface APIRequestData {
             @Field("name") String name,
             @Field("type") String type,
             @Field("total") String total,
-            @Field("date") String date
+            @Field("date") String date,
+            @Field("user_uid") String user_uid
     );
 }

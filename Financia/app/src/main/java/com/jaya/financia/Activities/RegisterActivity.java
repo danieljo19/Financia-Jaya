@@ -102,14 +102,19 @@ public class RegisterActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
-        binding.btnResetpassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RegisterActivity.this, ResetPasswordActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
