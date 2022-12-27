@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,9 +47,14 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
+        } else {
+            // Jika sudah login, tampilkan pesan selamat datang dan email pengguna
+            SharedPreferences sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE);
+            String email = sharedPref.getString("user_email", "");
         }
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
 
         lmData = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
         binding.rvData.setLayoutManager(lmData);
@@ -103,12 +109,25 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_logout) {
-            mAuth.signOut();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+            logout();
+//            mAuth.signOut();
+//            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//            startActivity(intent);
+//            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void logout() {
+        mAuth.signOut();
+        // Hapus data email dari shared preferences
+        SharedPreferences sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove("user_email");
+        editor.apply();
+        // Buka activity login
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        finish();
     }
 }

@@ -1,17 +1,14 @@
 package com.jaya.financia.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,6 +30,12 @@ public class LoginActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mRoot = mDatabase.getReference();
 
+        // Cek apakah user sudah login sebelumnya
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
+
         binding.progressBar.setVisibility(View.GONE);
 
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -42,30 +45,39 @@ public class LoginActivity extends AppCompatActivity {
                 String password = binding.etPassword.getText().toString();
 
                 if(TextUtils.isEmpty(email)) {
-                    binding.etEmail.setError("Enter your email address!");
+                    binding.etEmail.setError("Email is required");
+                    binding.etEmail.requestFocus();
                     return;
                 }
                 if(TextUtils.isEmpty(password)) {
-                    binding.etPassword.setError("Enter your password!");
+                    binding.etPassword.setError("Password is required");
+                    binding.etPassword.requestFocus();
+                    return;
+                }
+                if (password.length() < 6) {
+                    binding.etPassword.setError("Minimum length of password should be 6");
+                    binding.etPassword.requestFocus();
                     return;
                 }
 
                 binding.progressBar.setVisibility(View.VISIBLE);
 
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                binding.progressBar.setVisibility(View.GONE);
-                                if(task.isSuccessful()) {
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Authentication failed, check your email and password or sign up!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, task -> {
+                    if (task.isSuccessful()) {
+                        // Login berhasil, simpan email ke shared preferences
+                        SharedPreferences sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("user_email", email);
+                        editor.apply();
+
+                        // Buka activity utama
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    } else {
+                        // Login gagal, tampilkan pesan error
+                        Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
