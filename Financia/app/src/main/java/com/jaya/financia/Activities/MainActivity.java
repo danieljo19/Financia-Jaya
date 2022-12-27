@@ -55,9 +55,22 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         lmData = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
         binding.rvData.setLayoutManager(lmData);
+
+        SharedPreferences sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        boolean isFirstLogin = sharedPref.getBoolean("first_login", true);
+        if (isFirstLogin) {
+            // User baru, tampilkan pesan
+            Toast.makeText(MainActivity.this, "Selamat datang, " + mAuth.getCurrentUser().getEmail() + "!", Toast.LENGTH_SHORT).show();
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean("first_login", false);
+            editor.apply();
+        } else {
+            // User sudah pernah login, tampilkan pesan selamat datang
+            retrieveData();
+        }
+
         retrieveData();
 
         //getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(this));
@@ -87,9 +100,15 @@ public class MainActivity extends AppCompatActivity {
                 String pesan = response.body().getPesan();
                 listData = response.body().getData();
 
-                adapData = new DataAdapter(listData, MainActivity.this);
-                binding.rvData.setAdapter(adapData);
-                adapData.notifyDataSetChanged();
+                if (kode == 1) {
+                    // Data ditemukan
+                    adapData = new DataAdapter(listData, MainActivity.this);
+                    binding.rvData.setAdapter(adapData);
+                    adapData.notifyDataSetChanged();
+                } else {
+                    // Data tidak ditemukan
+                    binding.rvData.setVisibility(View.GONE);
+                }
             }
 
             @Override

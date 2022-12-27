@@ -1,5 +1,6 @@
 package com.jaya.financia.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jaya.financia.databinding.ActivityLoginBinding;
@@ -37,6 +39,21 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         binding.progressBar.setVisibility(View.GONE);
+
+        mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // Pengguna sedang login, tampilkan MainActivity
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                } else {
+                    // Pengguna belum login, tampilkan layar login
+                    Toast.makeText(LoginActivity.this, "Silahkan Login Kembali!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

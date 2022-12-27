@@ -83,7 +83,9 @@ public class RegisterActivity extends AppCompatActivity {
 //                                    String userId = mAuth.getCurrentUser().getUid();
                                     mRef = mRoot.child("users").child(userId);
                                     mRef.setValue(user);
-                                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity
+
+                                            .class);
                                     startActivity(intent);
                                     finish();
                                 }else {
