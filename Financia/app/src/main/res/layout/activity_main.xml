@@ -71,8 +71,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Transactions"
+                    android:textSize="15sp"
                     android:textAppearance="?attr/textAppearanceHeadlineSmall"
                     android:textStyle="bold" />
+                <Button
+                    android:id="@+id/btn_in"
+                    android:layout_width="60sp"
+                    android:layout_height="wrap_content"
+                    android:text="In"/>
+
+                <Button
+                    android:id="@+id/btn_out"
+                    android:layout_width="75sp"
+                    android:layout_height="wrap_content"
+                    android:text="Out"/>
+
+                <Button
+                    android:id="@+id/btn_asc"
+                    android:layout_width="75sp"
+                    android:layout_height="wrap_content"
+                    android:text="Asc"/>
+
+                <Button
+                    android:id="@+id/btn_des"
+                    android:layout_width="74sp"
+                    android:layout_height="wrap_content"
+                    android:text="Des"/>
 
             </LinearLayout>
 

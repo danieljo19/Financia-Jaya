@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager lmData;
     private List<DataModel> listData = new ArrayList<>();
     private String user_uid;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,40 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        binding.btnIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                type = "In";
+                retrieveFilter();
+
+            }
+        });
+
+        binding.btnOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                type = "Out";
+                retrieveFilter();
+
+            }
+        });
+
+        binding.btnAsc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                retrieveFilterDate();
+
+            }
+        });
+
+        binding.btnDes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                retrieveData();
+
+            }
+        });
     }
 
     public void retrieveData() {
@@ -96,6 +131,64 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 binding.progressBar.setVisibility(View.GONE);
+                int kode = response.body().getKode();
+                String pesan = response.body().getPesan();
+                listData = response.body().getData();
+
+                if (kode == 1) {
+                    // Data ditemukan
+                    adapData = new DataAdapter(listData, MainActivity.this);
+                    binding.rvData.setAdapter(adapData);
+                    adapData.notifyDataSetChanged();
+                } else {
+                    // Data tidak ditemukan
+                    binding.rvData.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void retrieveFilter() {
+        APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
+        Call<ResponseModel> tampilDataFilter = api.ardDataFilter(type, user_uid);
+
+        tampilDataFilter.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                int kode = response.body().getKode();
+                String pesan = response.body().getPesan();
+                listData = response.body().getData();
+
+                if (kode == 1) {
+                    // Data ditemukan
+                    adapData = new DataAdapter(listData, MainActivity.this);
+                    binding.rvData.setAdapter(adapData);
+                    adapData.notifyDataSetChanged();
+                } else {
+                    // Data tidak ditemukan
+                    binding.rvData.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void retrieveFilterDate() {
+        APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
+        Call<ResponseModel> tampilDataFilterDate = api.ardDataFilterDate(user_uid);
+
+        tampilDataFilterDate.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 int kode = response.body().getKode();
                 String pesan = response.body().getPesan();
                 listData = response.body().getData();
