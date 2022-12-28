@@ -34,4 +34,8 @@ public interface APIRequestData {
     @FormUrlEncoded
     @POST("filter_date.php")
     Call<ResponseModel> ardDataFilterDate(@Field("user_uid") String user_uid);
+
+    @FormUrlEncoded
+    @POST("filter_date_desc.php")
+    Call<ResponseModel> ardDataFilterDateDesc(@Field("user_uid") String user_uid);
 }

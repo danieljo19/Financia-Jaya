@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.sort_latest_date:
-                                retrieveData();
+                                retrieveFilterDateDesc();
                                 return true;
                             case R.id.sort_oldest_date:
                                 retrieveFilterDate();
@@ -214,6 +214,35 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // Data tidak ditemukan
                     binding.llNoData.setVisibility(View.VISIBLE);
+                    binding.rvData.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void retrieveFilterDateDesc() {
+        APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
+        Call<ResponseModel> tampilDataFilterDateDesc = api.ardDataFilterDateDesc(user_uid);
+
+        tampilDataFilterDateDesc.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                int kode = response.body().getKode();
+                String pesan = response.body().getPesan();
+                listData = response.body().getData();
+
+                if (kode == 1) {
+                    // Data ditemukan
+                    adapData = new DataAdapter(listData, MainActivity.this);
+                    binding.rvData.setAdapter(adapData);
+                    adapData.notifyDataSetChanged();
+                } else {
+                    // Data tidak ditemukan
                     binding.rvData.setVisibility(View.GONE);
                 }
             }
