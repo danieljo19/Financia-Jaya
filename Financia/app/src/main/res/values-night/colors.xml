@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="neutral_10">#1AFFFFFF</color>
+    <color name="neutral_20">#33FFFFFF</color>
+    <color name="neutral_30">#4DFFFFFF</color>
+    <color name="neutral_40">#66FFFFFF</color>
+    <color name="neutral_50">#80FFFFFF</color>
+    <color name="neutral_60">#99FFFFFF</color>
+    <color name="neutral_70">#B3FFFFFF</color>
+    <color name="neutral_80">#CCFFFFFF</color>
+    <color name="neutral_90">#E6FFFFFF</color>
+    <color name="neutral_100">#FFFFFFFF</color>
+</resources>

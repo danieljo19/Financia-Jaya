@@ -21,7 +21,8 @@
                 android:id="@+id/card_balance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="20dp"
                 app:cardBackgroundColor="@color/black"
                 app:cardElevation="16dp"
                 app:strokeWidth="0dp">
@@ -42,7 +43,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="28dp"
+                        android:fontFamily="@font/inter_medium"
                         android:text="My Balance"
                         android:textAppearance="?attr/textAppearanceTitleSmall"
                         android:textColor="@color/white_80" />
@@ -50,10 +52,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_extrabold"
                         android:text="Rp250.000"
                         android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 
@@ -68,35 +70,26 @@
 
                 <TextView
                     android:id="@+id/tv_headline_transactions"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter_bold"
                     android:text="Transactions"
-                    android:textSize="15sp"
-                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
-                    android:textStyle="bold" />
-                <Button
-                    android:id="@+id/btn_in"
-                    android:layout_width="60sp"
-                    android:layout_height="wrap_content"
-                    android:text="In"/>
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall" />
+
 
                 <Button
-                    android:id="@+id/btn_out"
-                    android:layout_width="75sp"
-                    android:layout_height="wrap_content"
-                    android:text="Out"/>
-
-                <Button
-                    android:id="@+id/btn_asc"
-                    android:layout_width="75sp"
-                    android:layout_height="wrap_content"
-                    android:text="Asc"/>
-
-                <Button
-                    android:id="@+id/btn_des"
-                    android:layout_width="74sp"
-                    android:layout_height="wrap_content"
-                    android:text="Des"/>
+                    android:id="@+id/btn_filter"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="0dp"
+                    android:text="Filter"
+                    app:icon="@drawable/ic_slider"
+                    app:iconSize="24dp" />
 
             </LinearLayout>
 
@@ -108,6 +101,44 @@
                 android:elevation="1dp"
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/card_item" />
+
+            <LinearLayout
+                android:id="@+id/ll_no_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="120dp"
+                    android:layout_marginVertical="16dp"
+                    android:contentDescription="Illustration of no data"
+                    android:src="@drawable/ill_no_data" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="No data found"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@color/neutral_80" />
+
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Add new data or try adjusting your filter to find what you're looking for."
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="@color/neutral_40" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

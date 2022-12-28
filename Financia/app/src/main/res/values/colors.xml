@@ -8,4 +8,26 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_80">#CCFFFFFF</color>
+
+<!--    <color name="neutral_10">#FAFAFA</color>-->
+<!--    <color name="neutral_20">#EAEAEA</color>-->
+<!--    <color name="neutral_30">#CACACA</color>-->
+<!--    <color name="neutral_40">#AAAAAA</color>-->
+<!--    <color name="neutral_50">#8A8A8A</color>-->
+<!--    <color name="neutral_60">#7A7A7A</color>-->
+<!--    <color name="neutral_70">#5A5A5A</color>-->
+<!--    <color name="neutral_80">#4A4A4A</color>-->
+<!--    <color name="neutral_90">#2A2A2A</color>-->
+<!--    <color name="neutral_100">#1A1A1A</color>-->
+
+    <color name="neutral_10">#1A1A1A1A</color>
+    <color name="neutral_20">#331A1A1A</color>
+    <color name="neutral_30">#4D1A1A1A</color>
+    <color name="neutral_40">#661A1A1A</color>
+    <color name="neutral_50">#801A1A1A</color>
+    <color name="neutral_60">#991A1A1A</color>
+    <color name="neutral_70">#B31A1A1A</color>
+    <color name="neutral_80">#CC1A1A1A</color>
+    <color name="neutral_90">#E61A1A1A</color>
+    <color name="neutral_100">#FF1A1A1A</color>
 </resources>

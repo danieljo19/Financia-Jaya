@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/sort_latest_date"
+        android:title="Sort by latest date" />
+    <item android:id="@+id/sort_oldest_date"
+        android:title="Sort by oldest date" />
+    <item android:id="@+id/show_only_expenses"
+        android:title="Show only expenses" />
+    <item android:id="@+id/show_only_incomes"
+        android:title="Show only incomes" />
+</menu>

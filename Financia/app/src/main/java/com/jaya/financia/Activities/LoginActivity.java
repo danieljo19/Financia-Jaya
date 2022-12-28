@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 } else {
                     // Pengguna belum login, tampilkan layar login
-                    Toast.makeText(LoginActivity.this, "Silahkan Login Kembali!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Log out succesful!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     } else {
                         // Login gagal, tampilkan pesan error
+                        binding.progressBar.setVisibility(View.GONE);
                         Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
                 });

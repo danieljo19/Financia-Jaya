@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user_uid = mAuth.getUid();
 
-        if(mAuth.getCurrentUser() == null) {
+        if (mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         boolean isFirstLogin = sharedPref.getBoolean("first_login", true);
         if (isFirstLogin) {
             // User baru, tampilkan pesan
-            Toast.makeText(MainActivity.this, "Selamat datang, " + mAuth.getCurrentUser().getEmail() + "!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Welcome, " + mAuth.getCurrentUser().getEmail() + "!", Toast.LENGTH_SHORT).show();
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean("first_login", false);
             editor.apply();
@@ -88,37 +89,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        binding.btnIn.setOnClickListener(new View.OnClickListener() {
+        binding.btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                type = "In";
-                retrieveFilter();
-
-            }
-        });
-
-        binding.btnOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                type = "Out";
-                retrieveFilter();
-
-            }
-        });
-
-        binding.btnAsc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                retrieveFilterDate();
-
-            }
-        });
-
-        binding.btnDes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                retrieveData();
-
+                PopupMenu popupMenu = new PopupMenu(MainActivity.this, binding.btnFilter);
+                popupMenu.getMenuInflater().inflate(R.menu.filter_data_popup_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.sort_latest_date:
+                                retrieveData();
+                                return true;
+                            case R.id.sort_oldest_date:
+                                retrieveFilterDate();
+                                return true;
+                            case R.id.show_only_expenses:
+                                type = "Out";
+                                retrieveFilter();
+                                return true;
+                            case R.id.show_only_incomes:
+                                type = "In";
+                                retrieveFilter();
+                                return true;
+                            default:
+                                return true;
+                        }
+                    }
+                });
+                popupMenu.show();
             }
         });
     }
@@ -142,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     adapData.notifyDataSetChanged();
                 } else {
                     // Data tidak ditemukan
+                    binding.llNoData.setVisibility(View.VISIBLE);
                     binding.rvData.setVisibility(View.GONE);
                 }
             }
@@ -154,12 +154,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void retrieveFilter() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.llNoData.setVisibility(View.GONE);
+        binding.rvData.setVisibility(View.GONE);
+
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
         Call<ResponseModel> tampilDataFilter = api.ardDataFilter(type, user_uid);
 
         tampilDataFilter.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.rvData.setVisibility(View.VISIBLE);
                 int kode = response.body().getKode();
                 String pesan = response.body().getPesan();
                 listData = response.body().getData();
@@ -171,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                     adapData.notifyDataSetChanged();
                 } else {
                     // Data tidak ditemukan
+                    binding.llNoData.setVisibility(View.VISIBLE);
                     binding.rvData.setVisibility(View.GONE);
                 }
             }
@@ -183,12 +190,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void retrieveFilterDate() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.llNoData.setVisibility(View.GONE);
+        binding.rvData.setVisibility(View.GONE);
+
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
         Call<ResponseModel> tampilDataFilterDate = api.ardDataFilterDate(user_uid);
 
         tampilDataFilterDate.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.rvData.setVisibility(View.VISIBLE);
                 int kode = response.body().getKode();
                 String pesan = response.body().getPesan();
                 listData = response.body().getData();
@@ -200,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                     adapData.notifyDataSetChanged();
                 } else {
                     // Data tidak ditemukan
+                    binding.llNoData.setVisibility(View.VISIBLE);
                     binding.rvData.setVisibility(View.GONE);
                 }
             }
@@ -220,12 +234,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_logout) {
+        if (id == R.id.action_logout) {
             logout();
-//            mAuth.signOut();
-//            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//            startActivity(intent);
-//            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
