@@ -100,17 +100,21 @@ public class MainActivity extends AppCompatActivity {
                         switch (menuItem.getItemId()) {
                             case R.id.sort_latest_date:
                                 retrieveFilterDateDesc();
+                                binding.btnFilter.setText("Latest date");
                                 return true;
                             case R.id.sort_oldest_date:
                                 retrieveFilterDate();
+                                binding.btnFilter.setText("Oldest date");
                                 return true;
                             case R.id.show_only_expenses:
                                 type = "Out";
                                 retrieveFilter();
+                                binding.btnFilter.setText("Expenses");
                                 return true;
                             case R.id.show_only_incomes:
                                 type = "In";
                                 retrieveFilter();
+                                binding.btnFilter.setText("Incomes");
                                 return true;
                             default:
                                 return true;

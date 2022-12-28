@@ -35,7 +35,7 @@
 
                     <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="28dp"
+                        android:layout_height="24dp"
                         android:contentDescription="Financia Logo"
                         android:scaleType="fitStart"
                         app:srcCompat="@drawable/logo_mastercard" />
@@ -77,7 +77,6 @@
                     android:fontFamily="@font/inter_bold"
                     android:text="Transactions"
                     android:textAppearance="?attr/textAppearanceHeadlineSmall" />
-
 
                 <Button
                     android:id="@+id/btn_filter"

@@ -36,7 +36,7 @@
                 android:fontFamily="@font/inter_bold"
                 android:maxLines="1"
                 android:text="Keterangan"
-                android:textAppearance="?attr/textAppearanceTitleSmall" />
+                android:textAppearance="?attr/textAppearanceTitleMedium" />
 
             <TextView
                 android:id="@+id/tv_total"
@@ -58,8 +58,8 @@
                 android:layout_alignParentBottom="true"
                 android:fontFamily="@font/inter_semibold"
                 android:text="Tanggal"
-                android:textAppearance="?attr/textAppearanceLabelMedium"
-                android:textColor="@color/neutral_60" />
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textColor="@color/neutral_50" />
 
         </RelativeLayout>
 

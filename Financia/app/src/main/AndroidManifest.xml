@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jaya.financia">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,8 +17,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Activities.AddActivity"
-            android:parentActivityName=".Activities.MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Activities.MainActivity" />
         <activity
             android:name=".Activities.ResetPasswordActivity"
             android:exported="false" />

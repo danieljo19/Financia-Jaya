@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jaya.financia.Activities.AddActivity;
+import com.jaya.financia.Activities.MainActivity;
 import com.jaya.financia.Model.DataModel;
 import com.jaya.financia.R;
 
@@ -56,7 +59,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         }
 
         // Tanggal
-        SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
         try {
             dateSQL = dateFormatSQL.parse(date);
         } catch (ParseException e) {
@@ -78,7 +81,6 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
-            //tvType = itemView.findViewById(R.id.tv_type);
             tvTotal = itemView.findViewById(R.id.tv_total);
             tvDate = itemView.findViewById(R.id.tv_date);
         }
