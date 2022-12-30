@@ -21,6 +21,7 @@ import com.jaya.financia.Adapter.DataAdapter;
 import com.jaya.financia.Model.DataModel;
 import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.R;
+import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        User user = new User();
         user_uid = mAuth.getUid();
 
         if (mAuth.getCurrentUser() == null) {
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+//        binding.tvFullName.setText(user.getFullname());
         lmData = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
         binding.rvData.setLayoutManager(lmData);
 
@@ -107,12 +110,12 @@ public class MainActivity extends AppCompatActivity {
                                 binding.btnFilter.setText("Oldest date");
                                 return true;
                             case R.id.show_only_expenses:
-                                type = "Out";
+                                type = "expenses";
                                 retrieveFilter();
                                 binding.btnFilter.setText("Expenses");
                                 return true;
                             case R.id.show_only_incomes:
-                                type = "In";
+                                type = "incomes";
                                 retrieveFilter();
                                 binding.btnFilter.setText("Incomes");
                                 return true;
@@ -199,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         binding.rvData.setVisibility(View.GONE);
 
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
-        Call<ResponseModel> tampilDataFilterDate = api.ardDataFilterDate(user_uid);
+        Call<ResponseModel> tampilDataFilterDate = api.ardDataFilterDateAsc(user_uid);
 
         tampilDataFilterDate.enqueue(new Callback<ResponseModel>() {
             @Override

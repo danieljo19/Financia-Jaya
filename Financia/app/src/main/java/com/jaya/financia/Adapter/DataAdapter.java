@@ -5,21 +5,18 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jaya.financia.Activities.AddActivity;
-import com.jaya.financia.Activities.MainActivity;
 import com.jaya.financia.Model.DataModel;
 import com.jaya.financia.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,19 +40,20 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DataModel data = listData.get(position);
-        String date = data.getDate().toString();
+        String date = data.getDate();
         Date dateSQL = null;
         String dateCard;
 
-        holder.tvName.setText(data.getName());
-        if (data.getType().equalsIgnoreCase("In")) {
-            //holder.tvType.setText("Income");
-            holder.tvTotal.setText("+Rp" + data.getTotal());
-            holder.tvTotal.setTextColor(Color.parseColor("#54B435"));
+        holder.tvCategory.setText(data.getCategory());
+        holder.tvNote.setText(data.getNote());
+        if (data.getType().equalsIgnoreCase("incomes")) {
+            holder.ivTransactionIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tic_incomes));
+            holder.tvAmount.setText("+Rp" + data.getAmount());
+            holder.tvAmount.setTextColor(Color.parseColor("#19AC27"));
         } else {
-            //holder.tvType.setText("Expenses");
-            holder.tvTotal.setText("-Rp" + data.getTotal());
-            holder.tvTotal.setTextColor(Color.parseColor("#FF1E1E"));
+            holder.ivTransactionIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tic_foodanddrink));
+            holder.tvAmount.setText("-Rp" + data.getAmount());
+            holder.tvAmount.setTextColor(Color.parseColor("#C72E2E"));
         }
 
         // Tanggal
@@ -76,13 +74,16 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvName, tvType, tvTotal, tvDate;
+        private TextView tvCategory, tvNote, tvAmount, tvDate;
+        private ImageView ivTransactionIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_name);
-            tvTotal = itemView.findViewById(R.id.tv_total);
+            tvCategory = itemView.findViewById(R.id.tv_category);
+            tvNote = itemView.findViewById(R.id.tv_name);
+            tvAmount = itemView.findViewById(R.id.tv_total);
             tvDate = itemView.findViewById(R.id.tv_date);
+            ivTransactionIcon = itemView.findViewById(R.id.iv_transaction_icon);
         }
     }
 }

@@ -27,22 +27,36 @@
                 app:cardElevation="16dp"
                 app:strokeWidth="0dp">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="24dp">
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/iv_logo_mastercard"
+                        android:layout_width="40dp"
                         android:layout_height="24dp"
+                        android:layout_alignParentTop="true"
                         android:contentDescription="Financia Logo"
                         android:scaleType="fitStart"
                         app:srcCompat="@drawable/logo_mastercard" />
 
                     <TextView
+                        android:id="@+id/tv_full_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Full Name"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="@color/white_80" />
+
+                    <TextView
+                        android:id="@+id/tv_my_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_logo_mastercard"
                         android:layout_marginTop="28dp"
                         android:fontFamily="@font/inter_medium"
                         android:text="My Balance"
@@ -52,12 +66,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_my_balance"
                         android:fontFamily="@font/inter_extrabold"
                         android:text="Rp250.000"
                         android:textAppearance="?attr/textAppearanceHeadlineMedium"
                         android:textColor="@color/white" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
             </com.google.android.material.card.MaterialCardView>
 

@@ -24,7 +24,7 @@ import retrofit2.Response;
 
 public class AddActivity extends AppCompatActivity {
     ActivityAddBinding binding;
-    private String name, type, total, date, user_uid;
+    private String type, category, note, amount, date, user_uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class AddActivity extends AppCompatActivity {
         binding.btnDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(materialDatePicker.isAdded()) {
+                if (materialDatePicker.isAdded()) {
                     return;
                 } else {
                     materialDatePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
@@ -71,23 +71,27 @@ public class AddActivity extends AppCompatActivity {
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                name = binding.etName.getEditText().getText().toString();
                 type = "";
-                if(binding.chipIncome.isChecked()) {
-                    type = "In";
-                } else if(binding.chipOutcome.isChecked()) {
-                    type = "Out";
+                if (binding.chipIncomes.isChecked()) {
+                    type = "incomes";
+                } else if (binding.chipExpenses.isChecked()) {
+                    type = "expenses";
                 }
-                total = binding.etTotal.getEditText().getText().toString();
+                category = binding.etCategory.getEditText().getText().toString();
+                note = binding.etNote.getEditText().getText().toString();
+                amount = binding.etAmount.getEditText().getText().toString();
 
                 // Cek apakah semua input telah diisi
-                if (name.isEmpty() || type.isEmpty() || total.isEmpty()) {
+                if (note.isEmpty() || type.isEmpty() || amount.isEmpty()) {
                     // Tampilkan pesan error jika ada input yang belum diisi
-                    if (name.isEmpty()) {
-                        binding.etName.setError("What is it?");
+                    if (category.isEmpty()) {
+                        binding.etCategory.setError("What is it?");
                     }
-                    if (total.isEmpty()) {
-                        binding.etTotal.setError("How much is it?");
+                    if (note.isEmpty()) {
+                        binding.etNote.setError("Tell us the details.");
+                    }
+                    if (amount.isEmpty()) {
+                        binding.etAmount.setError("How much is it?");
                     }
                     Toast.makeText(AddActivity.this, "Please fill all the information.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -99,18 +103,21 @@ public class AddActivity extends AppCompatActivity {
 
     private void createData() {
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
-        Call<ResponseModel> buatData = api.ardCreateData(name, type, total, date, user_uid);
+        Call<ResponseModel> buatData = api.ardCreateData(type, category, note, amount, date, user_uid);
 
         buatData.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                if(response.code() == 200) {
+                if (response.code() == 200) {
                     int kode = response.body().getKode();
                     String pesan = response.body().getPesan();
-                    if(kode == 1) {
-                        binding.etName.getEditText().setText("");
-                        binding.etTotal.getEditText().setText("");
+                    if (kode == 1) {
+                        binding.etCategory.getEditText().setText("");
+                        binding.etNote.getEditText().setText("");
+                        binding.etAmount.getEditText().setText("");
                         Toast.makeText(AddActivity.this, pesan, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AddActivity.this, pesan + " " + category + type, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(AddActivity.this, "Response code: " + response.code(), Toast.LENGTH_SHORT).show();

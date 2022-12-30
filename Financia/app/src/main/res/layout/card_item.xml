@@ -16,6 +16,7 @@
         android:padding="16dp">
 
         <ImageView
+            android:id="@+id/iv_transaction_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
@@ -29,35 +30,45 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_name"
+                android:id="@+id/tv_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:fontFamily="@font/inter_bold"
                 android:maxLines="1"
-                android:text="Keterangan"
+                android:text="Category"
                 android:textAppearance="?attr/textAppearanceTitleMedium" />
 
             <TextView
                 android:id="@+id/tv_total"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:gravity="center_vertical"
                 android:ellipsize="end"
                 android:fontFamily="@font/inter_bold"
                 android:maxLines="1"
                 android:text="Total"
-                android:textAppearance="?attr/textAppearanceTitleSmall" />
+                android:textAppearance="?attr/textAppearanceTitleMedium" />
 
             <TextView
-                android:id="@+id/tv_date"
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentBottom="true"
                 android:fontFamily="@font/inter_semibold"
-                android:text="Tanggal"
+                android:text="Note"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textColor="@color/neutral_50" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Date"
                 android:textAppearance="?attr/textAppearanceLabelSmall"
                 android:textColor="@color/neutral_50" />
 

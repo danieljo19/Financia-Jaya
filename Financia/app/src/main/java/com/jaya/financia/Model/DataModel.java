@@ -1,18 +1,19 @@
 package com.jaya.financia.Model;
 
-import java.util.Date;
-
 public class DataModel {
     private int id;
-    private String name;
-    private String total;
     private String type;
+    private String category;
+    private String note;
+    private String amount;
     private String date;
 
-    public DataModel(String name, String type, String total, String date) {
-        this.name = name;
-        this.total = total;
+    public DataModel(int id, String type, String category, String note, String amount, String date) {
+        this.id = id;
         this.type = type;
+        this.category = category;
+        this.note = note;
+        this.amount = amount;
         this.date = date;
     }
 
@@ -24,14 +25,6 @@ public class DataModel {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getType() {
         return type;
     }
@@ -40,12 +33,28 @@ public class DataModel {
         this.type = type;
     }
 
-    public String getTotal() {
-        return total;
+    public String getCategory() {
+        return category;
     }
 
-    public void setTotal(String total) {
-        this.total = total;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     public String getDate() {
