@@ -5,9 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,14 +35,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DataAdapter.OnItemLongClickListener{
     ActivityMainBinding binding;
     private FirebaseAuth mAuth;
     private RecyclerView.Adapter adapData;
     private RecyclerView.LayoutManager lmData;
     private List<DataModel> listData = new ArrayList<>();
+    private List<DataModel> listNote = new ArrayList<>();
     private String user_uid;
     private String type;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (kode == 1) {
                     // Data ditemukan
-                    adapData = new DataAdapter(listData, MainActivity.this);
+                    adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
@@ -179,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (kode == 1) {
                     // Data ditemukan
-                    adapData = new DataAdapter(listData, MainActivity.this);
+                    adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
@@ -215,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (kode == 1) {
                     // Data ditemukan
-                    adapData = new DataAdapter(listData, MainActivity.this);
+                    adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
@@ -245,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (kode == 1) {
                     // Data ditemukan
-                    adapData = new DataAdapter(listData, MainActivity.this);
+                    adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
@@ -287,5 +293,126 @@ public class MainActivity extends AppCompatActivity {
         // Buka activity login
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         finish();
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+        PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+        popupMenu.inflate(R.menu.menu_popup);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            popupMenu.setGravity(Gravity.RIGHT);
+        }
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.action_update:
+//                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+//                        intent.putExtra("EXTRA_DATA", listData.get(position));
+//                        startActivity(intent);
+                        id = listData.get(position).getId();
+                        type = listData.get(position).getType();
+                        getData();
+                        return true;
+                    case R.id.action_delete:
+                        id = listData.get(position).getId();
+                        type = listData.get(position).getType();
+                        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                        alert.setTitle("Confirm");
+                        alert.setMessage("Are you sure delete data '" + listData.get(position).getNote() + "'?");
+                        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deleteData();
+                            }
+                        });
+                        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                        AlertDialog alertDialog = alert.create();
+                        alertDialog.show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
+//        Toast.makeText(this, "Item Position Click : " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    private void deleteData() {
+        APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
+        Call<ResponseModel> deleteData = api.ardDeleteData(type, id);
+
+        deleteData.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                if(response.code() == 200) {
+                    int kode = response.body().getKode();
+                    String pesan = response.body().getPesan();
+
+                    if(kode == 1) {
+                        Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
+                        retrieveData();
+                    } else {
+                        Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "kode : " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getData() {
+        APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
+        Call<ResponseModel> getData = api.ardGetData(type, id);
+
+        getData.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+//                if(response.code() == 200) {
+                int kode = response.body().getKode();
+                String pesan = response.body().getPesan();
+                listNote = response.body().getData();
+
+                int varId = listNote.get(0).getId();
+                String varNote = listNote.get(0).getNote();
+                String varCat = listNote.get(0).getCategory();
+                String varAmount = listNote.get(0).getAmount();
+                String varType = listNote.get(0).getType();
+                String varDate = listNote.get(0).getDate();
+
+                Toast.makeText(MainActivity.this,  "kode: "+ kode + " pesan : "
+                        + pesan + " | " + varId + " | " + varType + " | " + varNote + " | " + varAmount + " | " + varCat + " | "
+                        + " | " + varDate, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("xId", varId);
+                bundle.putString("xNote", varNote);
+                bundle.putString("xCat", varCat);
+                bundle.putString("xAmount", varAmount);
+                bundle.putString("xType", varType);
+                bundle.putString("xDate", varDate);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
