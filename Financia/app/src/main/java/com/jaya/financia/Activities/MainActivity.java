@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
@@ -35,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements DataAdapter.OnItemLongClickListener{
+public class MainActivity extends AppCompatActivity implements DataAdapter.OnItemLongClickListener {
     ActivityMainBinding binding;
     private FirebaseAuth mAuth;
     private RecyclerView.Adapter adapData;
@@ -307,9 +308,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_update:
-//                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//                        intent.putExtra("EXTRA_DATA", listData.get(position));
-//                        startActivity(intent);
                         id = listData.get(position).getId();
                         type = listData.get(position).getType();
                         getData();
@@ -317,23 +315,23 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                     case R.id.action_delete:
                         id = listData.get(position).getId();
                         type = listData.get(position).getType();
-                        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-                        alert.setTitle("Confirm");
-                        alert.setMessage("Are you sure delete data '" + listData.get(position).getNote() + "'?");
-                        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                deleteData();
-                            }
-                        });
-                        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        });
-                        AlertDialog alertDialog = alert.create();
-                        alertDialog.show();
+                        MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(MainActivity.this)
+                                .setTitle("Confirm")
+                                .setMessage("Are you sure delete data '" + listData.get(position).getNote() + "'?")
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                    }
+                                })
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        deleteData();
+                                    }
+                                });
+                        alert.create();
+                        alert.show();
                         return true;
                     default:
                         return false;
@@ -351,11 +349,11 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         deleteData.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                if(response.code() == 200) {
+                if (response.code() == 200) {
                     int kode = response.body().getKode();
                     String pesan = response.body().getPesan();
 
-                    if(kode == 1) {
+                    if (kode == 1) {
                         Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
                         retrieveData();
                     } else {
@@ -392,9 +390,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 String varType = listNote.get(0).getType();
                 String varDate = listNote.get(0).getDate();
 
-                Toast.makeText(MainActivity.this,  "kode: "+ kode + " pesan : "
-                        + pesan + " | " + varId + " | " + varType + " | " + varNote + " | " + varAmount + " | " + varCat + " | "
-                        + " | " + varDate, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this,  "kode: "+ kode + " pesan : " + pesan + " | " + varId + " | " + varType + " | " + varNote + " | " + varAmount + " | " + varCat + " | " + " | " + varDate, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 Bundle bundle = new Bundle();
