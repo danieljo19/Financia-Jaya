@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +27,8 @@ import com.jaya.financia.API.RetroServer;
 import com.jaya.financia.Adapter.DataAdapter;
 import com.jaya.financia.Model.DataModel;
 import com.jaya.financia.Model.ResponseModel;
+import com.jaya.financia.Model.ResponseUser;
+import com.jaya.financia.Model.UserModel;
 import com.jaya.financia.R;
 import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityMainBinding;
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
     private RecyclerView.LayoutManager lmData;
     private List<DataModel> listData = new ArrayList<>();
     private List<DataModel> listNote = new ArrayList<>();
+    private List<UserModel> listUser = new ArrayList<>();
     private String user_uid;
     private String type;
     private int id;
@@ -53,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         mAuth = FirebaseAuth.getInstance();
         User user = new User();
         user_uid = mAuth.getUid();
+
 
         if (mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -83,7 +89,14 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             retrieveData();
         }
 
-        retrieveData();
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                retrieveData();
+            }
+        });
+
+        getFullName();
 
         //getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(this));
 
@@ -136,6 +149,32 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         });
     }
 
+    public void getFullName() {
+        APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
+        Call<ResponseUser> tampilUser = api.ardGetUser(user_uid);
+        tampilUser.enqueue(new Callback<ResponseUser>() {
+            @Override
+            public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
+                int kode = response.body().getKode();
+                String pesan = response.body().getPesan();
+                UserModel user = new UserModel();
+                user = response.body().getData().get(0);
+
+                if(kode==1) {
+                    binding.tvFullName.setText(user.getName());
+                    Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseUser> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error : " +t.getMessage() , Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void retrieveData() {
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
         Call<ResponseModel> tampilData = api.ardRetrieveData(user_uid);
@@ -149,11 +188,13 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 listData = response.body().getData();
 
                 if (kode == 1) {
+                    binding.swipeRefresh.setRefreshing(false);
                     // Data ditemukan
                     adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
+                    binding.swipeRefresh.setRefreshing(false);
                     // Data tidak ditemukan
                     binding.llNoData.setVisibility(View.VISIBLE);
                     binding.rvData.setVisibility(View.GONE);
@@ -162,12 +203,14 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
+                binding.swipeRefresh.setRefreshing(false);
                 Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void retrieveFilter() {
+        binding.swipeRefresh.setRefreshing(true);
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.llNoData.setVisibility(View.GONE);
         binding.rvData.setVisibility(View.GONE);
@@ -185,11 +228,13 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 listData = response.body().getData();
 
                 if (kode == 1) {
+                    binding.swipeRefresh.setRefreshing(false);
                     // Data ditemukan
                     adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
+                    binding.swipeRefresh.setRefreshing(false);
                     // Data tidak ditemukan
                     binding.llNoData.setVisibility(View.VISIBLE);
                     binding.rvData.setVisibility(View.GONE);
@@ -198,12 +243,14 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
+                binding.swipeRefresh.setRefreshing(false);
                 Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void retrieveFilterDate() {
+        binding.swipeRefresh.setRefreshing(true);
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.llNoData.setVisibility(View.GONE);
         binding.rvData.setVisibility(View.GONE);
@@ -221,11 +268,13 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 listData = response.body().getData();
 
                 if (kode == 1) {
+                    binding.swipeRefresh.setRefreshing(false);
                     // Data ditemukan
                     adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
+                    binding.swipeRefresh.setRefreshing(false);
                     // Data tidak ditemukan
                     binding.llNoData.setVisibility(View.VISIBLE);
                     binding.rvData.setVisibility(View.GONE);
@@ -234,12 +283,14 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
+                binding.swipeRefresh.setRefreshing(false);
                 Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void retrieveFilterDateDesc() {
+        binding.swipeRefresh.setRefreshing(true);
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
         Call<ResponseModel> tampilDataFilterDateDesc = api.ardDataFilterDateDesc(user_uid);
 
@@ -251,11 +302,13 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 listData = response.body().getData();
 
                 if (kode == 1) {
+                    binding.swipeRefresh.setRefreshing(false);
                     // Data ditemukan
                     adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
+                    binding.swipeRefresh.setRefreshing(false);
                     // Data tidak ditemukan
                     binding.rvData.setVisibility(View.GONE);
                 }
@@ -263,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
+                binding.swipeRefresh.setRefreshing(false);
                 Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -350,22 +404,27 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 if (response.code() == 200) {
+                    binding.swipeRefresh.setRefreshing(false);
                     int kode = response.body().getKode();
                     String pesan = response.body().getPesan();
 
                     if (kode == 1) {
+                        binding.swipeRefresh.setRefreshing(false);
                         Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
                         retrieveData();
                     } else {
+                        binding.swipeRefresh.setRefreshing(false);
                         Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    binding.swipeRefresh.setRefreshing(false);
                     Toast.makeText(MainActivity.this, "kode : " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
+                binding.swipeRefresh.setRefreshing(false);
                 Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
             }
         });

@@ -1,7 +1,7 @@
 package com.jaya.financia.API;
 
-import com.jaya.financia.Model.DataModel;
 import com.jaya.financia.Model.ResponseModel;
+import com.jaya.financia.Model.ResponseUser;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -63,4 +63,10 @@ public interface APIRequestData {
     @FormUrlEncoded
     @POST("filter_date_desc.php")
     Call<ResponseModel> ardDataFilterDateDesc(@Field("user_uid") String user_uid);
+
+    @FormUrlEncoded
+    @POST("read_user.php")
+    Call<ResponseUser> ardGetUser(
+            @Field("user_uid") String user_uid
+    );
 }
