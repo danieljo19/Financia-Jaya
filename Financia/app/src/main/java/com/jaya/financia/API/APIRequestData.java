@@ -14,6 +14,10 @@ public interface APIRequestData {
     Call<ResponseModel> ardRetrieveData(@Field("user_uid") String user_uid);
 
     @FormUrlEncoded
+    @POST("total.php")
+    Call<ResponseModel> ardRetrieveTotal(@Field("user_uid") String user_uid);
+
+    @FormUrlEncoded
     @POST("create.php")
     Call<ResponseModel> ardCreateData(
             @Field("type") String type,

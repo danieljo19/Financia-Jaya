@@ -70,11 +70,12 @@
                             android:textColor="@color/white_80" />
 
                         <TextView
+                            android:id="@+id/tv_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tv_my_balance"
                             android:fontFamily="@font/inter_extrabold"
-                            android:text="Rp250.000"
+                            android:text="Rp 0"
                             android:textAppearance="?attr/textAppearanceHeadlineMedium"
                             android:textColor="@color/white" />
 
