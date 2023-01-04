@@ -221,11 +221,12 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 binding.rvData.setVisibility(View.VISIBLE);
                 int kode = response.body().getKode();
                 int total = response.body().getTotal();
+                String Tot = String.format("%,d", total);
 
                 if (kode == 1) {
                     binding.swipeRefresh.setRefreshing(false);
                     // Data ditemukan
-                    binding.tvAmount.setText("Rp. " + String.valueOf(total));
+                    binding.tvAmount.setText("Rp" + Tot);
                 } else {
                     binding.swipeRefresh.setRefreshing(false);
                     // Data tidak ditemukan
@@ -445,6 +446,9 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                         binding.swipeRefresh.setRefreshing(false);
                         Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
                         retrieveData();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
                     } else {
                         binding.swipeRefresh.setRefreshing(false);
                         Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
