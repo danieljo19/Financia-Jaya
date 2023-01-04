@@ -92,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onRefresh() {
                 retrieveData();
+                retrieveFilter();
+                retrieveFilterDate();
+                retrieveFilterDateDesc();
             }
         });
 
