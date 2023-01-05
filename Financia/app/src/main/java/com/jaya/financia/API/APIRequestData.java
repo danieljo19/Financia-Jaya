@@ -2,8 +2,10 @@ package com.jaya.financia.API;
 
 import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.Model.ResponseUser;
+import com.jaya.financia.Model.UserModel;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -73,4 +75,12 @@ public interface APIRequestData {
     Call<ResponseUser> ardGetUser(
             @Field("user_uid") String user_uid
     );
+
+    @FormUrlEncoded
+    @POST("create_user.php")
+    Call<ResponseUser> ardCreateUser(
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("user_uid") String user_uid
+            );
 }

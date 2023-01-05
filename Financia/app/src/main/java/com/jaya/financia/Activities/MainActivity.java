@@ -31,6 +31,8 @@ import com.jaya.financia.R;
 import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityMainBinding;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         mAuth = FirebaseAuth.getInstance();
         User user = new User();
         user_uid = mAuth.getUid();
-
+        UserModel userModel = new UserModel();
 
         if (mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -70,15 +72,17 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        binding.tvFullName.setText(user.getFullname());
         lmData = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
         binding.rvData.setLayoutManager(lmData);
+
+        binding.progressBar.setVisibility(View.VISIBLE);
 
         SharedPreferences sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE);
         boolean isFirstLogin = sharedPref.getBoolean("first_login", true);
         if (isFirstLogin) {
             // User baru, tampilkan pesan
-            Toast.makeText(MainActivity.this, "Welcome, " + mAuth.getCurrentUser().getEmail() + "!", Toast.LENGTH_SHORT).show();
+            userModel.getUser_uid();
+            Toast.makeText(MainActivity.this, "Welcome, " + userModel.getName() + "!", Toast.LENGTH_SHORT).show();
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean("first_login", false);
             editor.apply();
@@ -117,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         binding.btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.progressBar.setVisibility(View.VISIBLE);
                 PopupMenu popupMenu = new PopupMenu(MainActivity.this, binding.btnFilter);
                 popupMenu.getMenuInflater().inflate(R.menu.filter_data_popup_menu, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -157,21 +162,23 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         tampilUser.enqueue(new Callback<ResponseUser>() {
             @Override
             public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
+                binding.progressBar.setVisibility(View.GONE);
                 int kode = response.body().getKode();
-                String pesan = response.body().getPesan();
                 UserModel user = new UserModel();
                 user = response.body().getData().get(0);
 
                 if(kode==1) {
+                    binding.progressBar.setVisibility(View.GONE);
                     binding.tvFullName.setText(user.getName());
-                    Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
+                    binding.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(MainActivity.this, "Kode : " + kode, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseUser> call, Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(MainActivity.this, "Error : " +t.getMessage() , Toast.LENGTH_SHORT).show();
             }
         });
@@ -208,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -220,11 +227,15 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         tampilTotal.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                binding.progressBar.setVisibility(View.GONE);
                 binding.rvData.setVisibility(View.VISIBLE);
                 int kode = response.body().getKode();
                 int total = response.body().getTotal();
-                String Tot = String.format("%,d", total);
+                DecimalFormat df = new DecimalFormat("#,###.##");
+                DecimalFormatSymbols symbols = df.getDecimalFormatSymbols();
+                symbols.setGroupingSeparator('.');
+                df.setDecimalFormatSymbols(symbols);
+                String formatted = df.format(total);
+                String Tot = String.format(formatted);
 
                 if (kode == 1) {
                     binding.swipeRefresh.setRefreshing(false);
@@ -248,7 +259,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 
     public void retrieveFilter() {
         binding.swipeRefresh.setRefreshing(true);
-        binding.progressBar.setVisibility(View.VISIBLE);
         binding.llNoData.setVisibility(View.GONE);
         binding.rvData.setVisibility(View.GONE);
 
@@ -258,10 +268,8 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         tampilDataFilter.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                binding.progressBar.setVisibility(View.GONE);
                 binding.rvData.setVisibility(View.VISIBLE);
                 int kode = response.body().getKode();
-                String pesan = response.body().getPesan();
                 listData = response.body().getData();
 
                 if (kode == 1) {
@@ -281,14 +289,13 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void retrieveFilterDate() {
         binding.swipeRefresh.setRefreshing(true);
-        binding.progressBar.setVisibility(View.VISIBLE);
         binding.llNoData.setVisibility(View.GONE);
         binding.rvData.setVisibility(View.GONE);
 
@@ -298,10 +305,8 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         tampilDataFilterDate.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                binding.progressBar.setVisibility(View.GONE);
                 binding.rvData.setVisibility(View.VISIBLE);
                 int kode = response.body().getKode();
-                String pesan = response.body().getPesan();
                 listData = response.body().getData();
 
                 if (kode == 1) {
@@ -321,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -335,7 +340,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 int kode = response.body().getKode();
-                String pesan = response.body().getPesan();
                 listData = response.body().getData();
 
                 if (kode == 1) {
@@ -354,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -443,29 +447,26 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 if (response.code() == 200) {
                     binding.swipeRefresh.setRefreshing(false);
                     int kode = response.body().getKode();
-                    String pesan = response.body().getPesan();
 
                     if (kode == 1) {
-                        binding.swipeRefresh.setRefreshing(false);
-                        Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
                         retrieveData();
-                        Intent intent = getIntent();
-                        finish();
-                        startActivity(intent);
+                        retrieveFilter();
+                        retrieveFilterDate();
+                        retrieveFilterDateDesc();
+                        retrieveTotal();
                     } else {
                         binding.swipeRefresh.setRefreshing(false);
-                        Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.swipeRefresh.setRefreshing(false);
-                    Toast.makeText(MainActivity.this, "kode : " + response.code(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "kode : " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-                Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -477,9 +478,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         getData.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-//                if(response.code() == 200) {
-                int kode = response.body().getKode();
-                String pesan = response.body().getPesan();
                 listNote = response.body().getData();
 
                 int varId = listNote.get(0).getId();
@@ -488,8 +486,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 String varAmount = listNote.get(0).getAmount();
                 String varType = listNote.get(0).getType();
                 String varDate = listNote.get(0).getDate();
-
-                //Toast.makeText(MainActivity.this,  "kode: "+ kode + " pesan : " + pesan + " | " + varId + " | " + varType + " | " + varNote + " | " + varAmount + " | " + varCat + " | " + " | " + varDate, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 Bundle bundle = new Bundle();
@@ -506,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
             }
         });
     }

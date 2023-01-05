@@ -9,8 +9,7 @@ public class UserModel {
     public UserModel() {
     }
 
-    public UserModel(int id, String name, String email, String user_uid) {
-        this.id = id;
+    public UserModel(String name, String email, String user_uid) {
         this.name = name;
         this.email = email;
         this.user_uid = user_uid;

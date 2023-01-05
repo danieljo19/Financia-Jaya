@@ -55,7 +55,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/inter_medium"
-                            android:text="Full Name"
+                            android:text="Your Name"
                             android:textAppearance="?attr/textAppearanceTitleSmall"
                             android:textColor="@color/white_80" />
 
