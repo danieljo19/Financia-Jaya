@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
     private List<DataModel> listData = new ArrayList<>();
     private List<DataModel> listNote = new ArrayList<>();
     private List<UserModel> listUser = new ArrayList<>();
-    private String user_uid;
-    private String type;
+    private String user_uid, type;
     private int id;
+    private UserModel userModel = new UserModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +58,16 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         mAuth = FirebaseAuth.getInstance();
         User user = new User();
         user_uid = mAuth.getUid();
-        UserModel userModel = new UserModel();
 
         if (mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         } else {
-            // Jika sudah login, tampilkan pesan selamat datang dan email pengguna
             SharedPreferences sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE);
             String email = sharedPref.getString("user_email", "");
         }
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -77,34 +76,25 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        SharedPreferences sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        boolean isFirstLogin = sharedPref.getBoolean("first_login", true);
-        if (isFirstLogin) {
-            // User baru, tampilkan pesan
-            userModel.getUser_uid();
-            Toast.makeText(MainActivity.this, "Welcome, " + userModel.getName() + "!", Toast.LENGTH_SHORT).show();
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean("first_login", false);
-            editor.apply();
-        } else {
-            // User sudah pernah login, tampilkan pesan selamat datang
-            retrieveData();
-            retrieveTotal();
-        }
+        getFullName();
+        retrieveData();
+        retrieveTotal();
 
         binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                retrieveData();
-                retrieveFilter();
-                retrieveFilterDate();
-                retrieveFilterDateDesc();
+                if (binding.btnFilter.getText().toString().equalsIgnoreCase("Filter")) {
+                    retrieveData();
+                } else if (binding.btnFilter.getText().toString().equalsIgnoreCase("Latest date")) {
+                    retrieveFilterDate();
+                } else if (binding.btnFilter.getText().toString().equalsIgnoreCase("Oldest date")) {
+                    retrieveFilterDateDesc();
+                    retrieveFilterDateDesc();
+                } else {
+                    retrieveFilter();
+                }
             }
         });
-
-        getFullName();
-
-        //getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(this));
 
         binding.fabTambah.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         binding.btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.progressBar.setVisibility(View.VISIBLE);
                 PopupMenu popupMenu = new PopupMenu(MainActivity.this, binding.btnFilter);
                 popupMenu.getMenuInflater().inflate(R.menu.filter_data_popup_menu, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -164,22 +153,19 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
                 binding.progressBar.setVisibility(View.GONE);
                 int kode = response.body().getKode();
-                UserModel user = new UserModel();
-                user = response.body().getData().get(0);
+                userModel = response.body().getData().get(0);
 
-                if(kode==1) {
-                    binding.progressBar.setVisibility(View.GONE);
-                    binding.tvFullName.setText(user.getName());
-                }else {
-                    binding.progressBar.setVisibility(View.GONE);
-                    Toast.makeText(MainActivity.this, "Kode : " + kode, Toast.LENGTH_SHORT).show();
+                if (kode == 1) {
+                    binding.tvFullName.setText(userModel.getName());
+                } else {
+                    binding.tvFullName.setText("Error");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseUser> call, Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
-                Toast.makeText(MainActivity.this, "Error : " +t.getMessage() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Error Name: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -191,31 +177,29 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         tampilData.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                binding.progressBar.setVisibility(View.GONE);
                 int kode = response.body().getKode();
-//                int total = response.body().getTotal();
                 String pesan = response.body().getPesan();
-//                binding.tvAmount.setText(String.valueOf(total));
                 listData = response.body().getData();
+                binding.swipeRefresh.setRefreshing(false);
 
                 if (kode == 1) {
-                    binding.swipeRefresh.setRefreshing(false);
                     // Data ditemukan
+                    binding.rvData.setVisibility(View.VISIBLE);
+                    binding.llNoData.setVisibility(View.GONE);
                     adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
-                    binding.swipeRefresh.setRefreshing(false);
                     // Data tidak ditemukan
-                    binding.llNoData.setVisibility(View.VISIBLE);
                     binding.rvData.setVisibility(View.GONE);
+                    binding.llNoData.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -227,25 +211,19 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         tampilTotal.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                binding.rvData.setVisibility(View.VISIBLE);
                 int kode = response.body().getKode();
                 int total = response.body().getTotal();
                 DecimalFormat df = new DecimalFormat("#,###.##");
                 DecimalFormatSymbols symbols = df.getDecimalFormatSymbols();
                 symbols.setGroupingSeparator('.');
                 df.setDecimalFormatSymbols(symbols);
-                String formatted = df.format(total);
-                String Tot = String.format(formatted);
+                String Tot = df.format(total);
+                binding.swipeRefresh.setRefreshing(false);
 
                 if (kode == 1) {
-                    binding.swipeRefresh.setRefreshing(false);
-                    // Data ditemukan
                     binding.tvAmount.setText("Rp" + Tot);
                 } else {
-                    binding.swipeRefresh.setRefreshing(false);
-                    // Data tidak ditemukan
-                    binding.llNoData.setVisibility(View.VISIBLE);
-                    binding.rvData.setVisibility(View.GONE);
+                    binding.tvAmount.setText("Error");
                 }
             }
 
@@ -259,8 +237,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 
     public void retrieveFilter() {
         binding.swipeRefresh.setRefreshing(true);
-        binding.llNoData.setVisibility(View.GONE);
-        binding.rvData.setVisibility(View.GONE);
 
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
         Call<ResponseModel> tampilDataFilter = api.ardDataFilter(type, user_uid);
@@ -268,21 +244,21 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         tampilDataFilter.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                binding.rvData.setVisibility(View.VISIBLE);
                 int kode = response.body().getKode();
                 listData = response.body().getData();
+                binding.swipeRefresh.setRefreshing(false);
 
                 if (kode == 1) {
-                    binding.swipeRefresh.setRefreshing(false);
                     // Data ditemukan
+                    binding.rvData.setVisibility(View.VISIBLE);
+                    binding.llNoData.setVisibility(View.GONE);
                     adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
-                    binding.swipeRefresh.setRefreshing(false);
                     // Data tidak ditemukan
-                    binding.llNoData.setVisibility(View.VISIBLE);
                     binding.rvData.setVisibility(View.GONE);
+                    binding.llNoData.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -296,8 +272,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 
     public void retrieveFilterDate() {
         binding.swipeRefresh.setRefreshing(true);
-        binding.llNoData.setVisibility(View.GONE);
-        binding.rvData.setVisibility(View.GONE);
 
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
         Call<ResponseModel> tampilDataFilterDate = api.ardDataFilterDateAsc(user_uid);
@@ -305,21 +279,21 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         tampilDataFilterDate.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                binding.rvData.setVisibility(View.VISIBLE);
                 int kode = response.body().getKode();
                 listData = response.body().getData();
+                binding.swipeRefresh.setRefreshing(false);
 
                 if (kode == 1) {
-                    binding.swipeRefresh.setRefreshing(false);
                     // Data ditemukan
+                    binding.rvData.setVisibility(View.VISIBLE);
+                    binding.llNoData.setVisibility(View.GONE);
                     adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
-                    binding.swipeRefresh.setRefreshing(false);
                     // Data tidak ditemukan
-                    binding.llNoData.setVisibility(View.VISIBLE);
                     binding.rvData.setVisibility(View.GONE);
+                    binding.llNoData.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -341,17 +315,19 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 int kode = response.body().getKode();
                 listData = response.body().getData();
+                binding.swipeRefresh.setRefreshing(false);
 
                 if (kode == 1) {
-                    binding.swipeRefresh.setRefreshing(false);
                     // Data ditemukan
+                    binding.rvData.setVisibility(View.VISIBLE);
+                    binding.llNoData.setVisibility(View.GONE);
                     adapData = new DataAdapter(listData, MainActivity.this, MainActivity.this);
                     binding.rvData.setAdapter(adapData);
                     adapData.notifyDataSetChanged();
                 } else {
-                    binding.swipeRefresh.setRefreshing(false);
                     // Data tidak ditemukan
                     binding.rvData.setVisibility(View.GONE);
+                    binding.llNoData.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -396,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
         popupMenu.inflate(R.menu.menu_popup);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            popupMenu.setGravity(Gravity.RIGHT);
+            popupMenu.setGravity(Gravity.END);
         }
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -434,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             }
         });
         popupMenu.show();
-//        Toast.makeText(this, "Item Position Click : " + position, Toast.LENGTH_SHORT).show();
+
     }
 
     private void deleteData() {
