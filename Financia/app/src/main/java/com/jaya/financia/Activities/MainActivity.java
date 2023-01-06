@@ -1,5 +1,6 @@
 package com.jaya.financia.Activities;
 
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -23,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
 import com.jaya.financia.Adapter.DataAdapter;
+import com.jaya.financia.ExpensesFragment;
 import com.jaya.financia.Model.DataModel;
 import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.Model.ResponseUser;
@@ -30,6 +33,8 @@ import com.jaya.financia.Model.UserModel;
 import com.jaya.financia.R;
 import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityMainBinding;
+import com.jaya.financia.databinding.FragmentExpensesBinding;
+import com.jaya.financia.databinding.FragmentIncomesBinding;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -89,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                     retrieveFilterDate();
                 } else if (binding.btnFilter.getText().toString().equalsIgnoreCase("Oldest date")) {
                     retrieveFilterDateDesc();
-                    retrieveFilterDateDesc();
                 } else {
                     retrieveFilter();
                 }
@@ -99,13 +103,18 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         binding.fabTambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("user_uid", user_uid);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//                finish();
                 Intent intent = new Intent(MainActivity.this, AddActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("user_uid", user_uid);
-                intent.putExtras(bundle);
+                intent.putExtra("data", bundle);
                 startActivity(intent);
-                finish();
-            }
+               }
         });
 
         binding.btnFilter.setOnClickListener(new View.OnClickListener() {
@@ -425,10 +434,15 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                     int kode = response.body().getKode();
 
                     if (kode == 1) {
-                        retrieveData();
-                        retrieveFilter();
-                        retrieveFilterDate();
-                        retrieveFilterDateDesc();
+                        if (binding.btnFilter.getText().toString().equalsIgnoreCase("Filter")) {
+                            retrieveData();
+                        } else if (binding.btnFilter.getText().toString().equalsIgnoreCase("Latest date")) {
+                            retrieveFilterDate();
+                        } else if (binding.btnFilter.getText().toString().equalsIgnoreCase("Oldest date")) {
+                            retrieveFilterDateDesc();
+                        } else {
+                            retrieveFilter();
+                        }
                         retrieveTotal();
                     } else {
                         binding.swipeRefresh.setRefreshing(false);

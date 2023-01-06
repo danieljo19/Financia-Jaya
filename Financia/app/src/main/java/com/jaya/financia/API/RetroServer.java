@@ -1,5 +1,8 @@
 package com.jaya.financia.API;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -9,9 +12,13 @@ public class RetroServer {
 
     public static Retrofit konekRetrofit() {
         if(retro == null) {
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+
             retro = new Retrofit.Builder()
                     .baseUrl(baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
         return retro;
