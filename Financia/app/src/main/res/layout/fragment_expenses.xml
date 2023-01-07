@@ -11,20 +11,38 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_category"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_category"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:text="Category"
             android:layout_marginTop="8dp"
-            android:hint="Category (1, 2, ..., 18)">
+            android:layout_marginEnd="12dp"
+            android:layout_gravity="end"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Category"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/inter"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/tv_category"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="16dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:hint="Category (1, 2, ..., 18)">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="number" />-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/et_note"

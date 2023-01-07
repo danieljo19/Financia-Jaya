@@ -1,12 +1,18 @@
 package com.jaya.financia;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -36,6 +42,13 @@ public class ExpensesFragment extends Fragment {
         // Inflate the layout for this fragment
         Bundle bundle = this.getArguments();
         user_uid = bundle.getString("user_uid");
+
+        binding.btnCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
 
         // Mendapatkan tanggal saat ini
         Calendar calendar = Calendar.getInstance();
@@ -72,7 +85,7 @@ public class ExpensesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 type = "expenses";
-                category = binding.etCategory.getEditText().getText().toString();
+                category = binding.tvCategory.getText().toString();
                 note = binding.etNote.getEditText().getText().toString();
                 amount = binding.etAmount.getEditText().getText().toString();
 
@@ -80,7 +93,7 @@ public class ExpensesFragment extends Fragment {
                 if (note.isEmpty() || type.isEmpty() || amount.isEmpty()) {
                     // Tampilkan pesan error jika ada input yang belum diisi
                     if (category.isEmpty()) {
-                        binding.etCategory.setError("What is it?");
+                        binding.tvCategory.setError("What is it?");
                     }
                     if (note.isEmpty()) {
                         binding.etNote.setError("Tell us the details.");
@@ -96,6 +109,182 @@ public class ExpensesFragment extends Fragment {
         });
         return view;
     }
+
+    private void showDialog() {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottomsheetlayout);
+
+        LinearLayout llFoodAndDrink = dialog.findViewById(R.id.ll_foodAndDrink);
+        LinearLayout llShopping = dialog.findViewById(R.id.ll_shopping);
+        LinearLayout llTransport = dialog.findViewById(R.id.ll_transport);
+        LinearLayout llHome = dialog.findViewById(R.id.ll_home);
+        LinearLayout llBillsAndFees = dialog.findViewById(R.id.ll_billsAndFees);
+        LinearLayout llEntertainment = dialog.findViewById(R.id.ll_entertainment);
+        LinearLayout llVehicle = dialog.findViewById(R.id.ll_vehicle);
+        LinearLayout llTravel = dialog.findViewById(R.id.ll_travel);
+        LinearLayout llFamilyAndPersonal = dialog.findViewById(R.id.ll_familyAndPersonal);
+        LinearLayout llHealthcare = dialog.findViewById(R.id.ll_healthcare);
+        LinearLayout llEducation = dialog.findViewById(R.id.ll_education);
+        LinearLayout llGroceries = dialog.findViewById(R.id.ll_groceries);
+        LinearLayout llGifts = dialog.findViewById(R.id.ll_gifts);
+        LinearLayout llSportsAndHobby = dialog.findViewById(R.id.ll_sportsAndHobby);
+        LinearLayout llBeauty = dialog.findViewById(R.id.ll_beauty);
+        LinearLayout llWork = dialog.findViewById(R.id.ll_work);
+        LinearLayout llPet = dialog.findViewById(R.id.ll_pet);
+        LinearLayout llOther = dialog.findViewById(R.id.ll_other);
+
+        llFoodAndDrink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("1");
+                dialog.dismiss();
+            }
+        });
+
+        llShopping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("2");
+                dialog.dismiss();
+            }
+        });
+
+        llTransport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("3");
+                dialog.dismiss();
+            }
+        });
+
+        llHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("4");
+                dialog.dismiss();
+            }
+        });
+
+        llBillsAndFees.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("5");
+                dialog.dismiss();
+            }
+        });
+
+        llEntertainment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("6");
+                dialog.dismiss();
+            }
+        });
+
+        llVehicle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("7");
+                dialog.dismiss();
+            }
+        });
+
+        llTravel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("8");
+                dialog.dismiss();
+            }
+        });
+
+        llFamilyAndPersonal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("9");
+                dialog.dismiss();
+            }
+        });
+
+        llHealthcare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("10");
+                dialog.dismiss();
+            }
+        });
+
+        llEducation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("11");
+                dialog.dismiss();
+            }
+        });
+
+        llGroceries.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("12");
+                dialog.dismiss();
+            }
+        });
+
+        llGifts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("13");
+                dialog.dismiss();
+            }
+        });
+
+        llSportsAndHobby.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("14");
+                dialog.dismiss();
+            }
+        });
+
+        llBeauty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("15");
+                dialog.dismiss();
+            }
+        });
+
+        llWork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("16");
+                dialog.dismiss();
+            }
+        });
+
+        llPet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("17");
+                dialog.dismiss();
+            }
+        });
+
+        llOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("18");
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
     private void createData() {
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
         Call<ResponseModel> buatData = api.ardCreateData(type, category, note, amount, date, user_uid);
@@ -107,7 +296,7 @@ public class ExpensesFragment extends Fragment {
                     int kode = response.body().getKode();
                     String pesan = response.body().getPesan();
                     if (kode == 1) {
-                        binding.etCategory.getEditText().setText("");
+                        binding.tvCategory.getText();
                         binding.etNote.getEditText().setText("");
                         binding.etAmount.getEditText().setText("");
                         Toast.makeText(getActivity(), pesan, Toast.LENGTH_SHORT).show();

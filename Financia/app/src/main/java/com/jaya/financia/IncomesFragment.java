@@ -3,15 +3,21 @@ package com.jaya.financia;
 import static android.content.Intent.getIntent;
 import static android.content.Intent.getIntentOld;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -43,6 +49,13 @@ public class IncomesFragment extends Fragment {
         // Inflate the layout for this fragment
         Bundle bundle = this.getArguments();
         user_uid = bundle.getString("user_uid");
+
+        binding.btnCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
 
         // Mendapatkan tanggal saat ini
         Calendar calendar = Calendar.getInstance();
@@ -79,7 +92,7 @@ public class IncomesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 type = "incomes";
-                category = binding.etCategory.getEditText().getText().toString();
+                category = binding.tvCategory.getText().toString();
                 note = binding.etNote.getEditText().getText().toString();
                 amount = binding.etAmount.getEditText().getText().toString();
 
@@ -87,7 +100,7 @@ public class IncomesFragment extends Fragment {
                 if (note.isEmpty() || type.isEmpty() || amount.isEmpty()) {
                     // Tampilkan pesan error jika ada input yang belum diisi
                     if (category.isEmpty()) {
-                        binding.etCategory.setError("What is it?");
+                        binding.tvCategory.setError("What is it?");
                     }
                     if (note.isEmpty()) {
                         binding.etNote.setError("Tell us the details.");
@@ -103,6 +116,92 @@ public class IncomesFragment extends Fragment {
         });
         return view;
     }
+
+    private void showDialog() {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottomsheetlayout2);
+
+        LinearLayout llSalary = dialog.findViewById(R.id.ll_salary);
+        LinearLayout llBusiness = dialog.findViewById(R.id.ll_business);
+        LinearLayout llGifts = dialog.findViewById(R.id.ll_gifts);
+        LinearLayout llExtraIncome = dialog.findViewById(R.id.ll_extraIncome);
+        LinearLayout llLoan = dialog.findViewById(R.id.ll_loan);
+        LinearLayout llInvestment = dialog.findViewById(R.id.ll_investment);
+        LinearLayout llInsurancePayout = dialog.findViewById(R.id.ll_insurancePayout);
+        LinearLayout llOther = dialog.findViewById(R.id.ll_other);
+
+        llSalary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("1");
+                dialog.dismiss();
+            }
+        });
+
+        llBusiness.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("2");
+                dialog.dismiss();
+            }
+        });
+
+        llGifts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("3");
+                dialog.dismiss();
+            }
+        });
+
+        llExtraIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("4");
+                dialog.dismiss();
+            }
+        });
+
+        llLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("5");
+                dialog.dismiss();
+            }
+        });
+
+        llInvestment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("6");
+                dialog.dismiss();
+            }
+        });
+
+        llInsurancePayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("7");
+                dialog.dismiss();
+            }
+        });
+
+        llOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.tvCategory.setText("8");
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
     private void createData() {
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
         Call<ResponseModel> buatData = api.ardCreateData(type, category, note, amount, date, user_uid);
@@ -114,7 +213,7 @@ public class IncomesFragment extends Fragment {
                     int kode = response.body().getKode();
                     String pesan = response.body().getPesan();
                     if (kode == 1) {
-                        binding.etCategory.getEditText().setText("");
+                        binding.tvCategory.setText("");
                         binding.etNote.getEditText().setText("");
                         binding.etAmount.getEditText().setText("");
                         Toast.makeText(getActivity(), pesan, Toast.LENGTH_SHORT).show();
