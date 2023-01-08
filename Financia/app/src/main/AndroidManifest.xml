@@ -16,6 +16,14 @@
         android:theme="@style/Theme.Material3.DynamicColors.DayNight"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Activities.AnalythicsActivity"
+            android:exported="false"
+            android:parentActivityName=".Activities.MainActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activities.EditActivity"
             android:exported="false"
             android:parentActivityName=".Activities.MainActivity">

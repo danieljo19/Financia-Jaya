@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import com.jaya.financia.databinding.ActivityMainBinding;
 import com.jaya.financia.databinding.FragmentExpensesBinding;
 import com.jaya.financia.databinding.FragmentIncomesBinding;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements DataAdapter.OnItemLongClickListener {
+public class MainActivity extends AppCompatActivity implements DataAdapter.OnItemLongClickListener, Serializable {
     ActivityMainBinding binding;
     private FirebaseAuth mAuth;
     private RecyclerView.Adapter adapData;
@@ -109,7 +111,8 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 //                intent.putExtras(bundle);
 //                startActivity(intent);
 //                finish();
-                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+
+                Intent intent = new Intent(MainActivity.this, AnalythicsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("user_uid", user_uid);
                 intent.putExtra("data", bundle);
