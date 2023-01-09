@@ -28,7 +28,10 @@ import com.jaya.financia.R;
 import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityAnalyticBinding;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.*;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 import retrofit2.Call;
@@ -56,8 +59,10 @@ public class AnalyticActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private List<DataModel> listData = new ArrayList<>();
-    private String user_uid, type, test ="...";
-    private int id;
+    private String user_uid, type, test, date, day, dateList, EMonth, EDay, month ="";
+    private int id, size;
+    private int Tot;
+    private int InMoney, OutMoney, tot, totOut = 0;
     private UserModel userModel = new UserModel();
 
     @Override
@@ -103,8 +108,10 @@ public class AnalyticActivity extends AppCompatActivity {
             }
         });
 
-        getBarEntries();
+        retrieveData();
+//        getBarEntries();
         getPieEntries();
+        binding.test.setText(String.valueOf(Tot));
 
         barChart = binding.idBarChart;
         pieChart = binding.idPieChart;
@@ -126,7 +133,6 @@ public class AnalyticActivity extends AppCompatActivity {
         pieDataSet.setValueTextColor(getResources().getColor(android.R.color.holo_red_light));
 
         // setting text size
-        retrieveData();
         barDataSet.setValueTextSize(16f);
         barChart.getDescription().setEnabled(false);
 
@@ -141,15 +147,14 @@ public class AnalyticActivity extends AppCompatActivity {
     private void getBarEntries() {
         // creating a new array list
         barEntriesArrayList = new ArrayList<>();
+//        binding.test.setText(String.valueOf(Tot));
+
 
 //         adding new entry to our array list with bar
 //         entry and passing x and y axis value to it.
-        barEntriesArrayList.add(new BarEntry(1f, 4));
-        barEntriesArrayList.add(new BarEntry(2f, 6));
-        barEntriesArrayList.add(new BarEntry(3f, 8));
-        barEntriesArrayList.add(new BarEntry(4f, 2));
-        barEntriesArrayList.add(new BarEntry(5f, 4));
-        barEntriesArrayList.add(new BarEntry(6f, 1));
+//        for (int i = 0; i < size; i++) {
+            barEntriesArrayList.add(new BarEntry(1f, 1));
+//        }
     }
 
     private void getPieEntries() {
@@ -176,11 +181,43 @@ public class AnalyticActivity extends AppCompatActivity {
                 int kode = response.body().getKode();
                 String pesan = response.body().getPesan();
                 listData = response.body().getData();
-
+                size = listData.size();
+//                String test = listData.get(0).getDate();
+//                date = listData.get(0).getDate();
+//                String[] parts = date.split("-");
+//                String month = parts[1];
 
                 if (kode == 1) {
                     // Data ditemukan
-                    binding.test.setText(String.valueOf(kode));
+                    for (int i = 0; i < size; i++){
+                        date = listData.get(i).getDate();
+                        String[] numbah = date.split("-");
+                        day = numbah[0];
+                        month = numbah[1];
+                        for (int a = 0; a < size; a++){
+                           dateList = listData.get(a).getDate();
+                           String[] numbah2 = dateList.split("-");
+                           EMonth = numbah2[1];
+                           type = listData.get(a).getType();
+//                           if (month == "01") {
+                               if (type == "income"){
+                                   InMoney = Integer.parseInt(listData.get(0).getAmount());
+                                   tot = InMoney + tot;
+                                   Tot = tot;
+                               }else {
+                                   OutMoney = Integer.parseInt(listData.get(0).getAmount());
+                                   totOut = totOut - OutMoney;
+                                   Tot = totOut;
+                               }
+//                           } else {
+//                               break;
+//                           }
+                        }
+                        break;
+                    }
+                    barEntriesArrayList = new ArrayList<>();
+                    barEntriesArrayList.add(new BarEntry(1f, Tot));
+
 //                    for (DataModel data : listData) {
 //                        String type = data.getType();
 //                        String date = data.getDate();
