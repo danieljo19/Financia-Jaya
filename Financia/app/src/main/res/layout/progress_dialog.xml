@@ -22,7 +22,7 @@
         android:layout_marginLeft="20dp"
         android:fontFamily="@font/inter_semibold"
         android:gravity="center_vertical"
-        android:text="Dialog..."
+        android:text="Dialog Text"
         android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
 
 </LinearLayout>

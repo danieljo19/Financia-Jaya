@@ -13,7 +13,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
-import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.Model.ResponseUser;
 import com.jaya.financia.Model.UserModel;
 import com.jaya.financia.R;
@@ -89,7 +88,7 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        binding.tvChangePassword.setOnClickListener(new View.OnClickListener() {
+        binding.llChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SettingActivity.this, ChangePasswordActivity.class);

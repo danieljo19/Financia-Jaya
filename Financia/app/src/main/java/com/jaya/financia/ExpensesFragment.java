@@ -88,15 +88,14 @@ public class ExpensesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 type = "expenses";
-                category = binding.tvCategory.getText().toString();
                 note = binding.etNote.getEditText().getText().toString();
                 amount = binding.etAmount.getEditText().getText().toString();
 
                 // Cek apakah semua input telah diisi
                 if (note.isEmpty() || type.isEmpty() || amount.isEmpty()) {
                     // Tampilkan pesan error jika ada input yang belum diisi
-                    if (category.isEmpty()) {
-                        binding.tvCategory.setError("What is it?");
+                    if (binding.tvCategory.getText().toString().equalsIgnoreCase("Category")) {
+                        category = "18";
                     }
                     if (note.isEmpty()) {
                         binding.etNote.setError("Tell us the details.");
@@ -154,7 +153,8 @@ public class ExpensesFragment extends Fragment {
         llFoodAndDrink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("1");
+                category = "1";
+                binding.tvCategory.setText("Food and Drink");
                 dialog.dismiss();
             }
         });
@@ -162,7 +162,8 @@ public class ExpensesFragment extends Fragment {
         llShopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("2");
+                category = "2";
+                binding.tvCategory.setText("Shopping");
                 dialog.dismiss();
             }
         });
@@ -170,7 +171,8 @@ public class ExpensesFragment extends Fragment {
         llTransport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("3");
+                category = "3";
+                binding.tvCategory.setText("Transport");
                 dialog.dismiss();
             }
         });
@@ -178,7 +180,8 @@ public class ExpensesFragment extends Fragment {
         llHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("4");
+                category = "4";
+                binding.tvCategory.setText("Home");
                 dialog.dismiss();
             }
         });
@@ -186,7 +189,8 @@ public class ExpensesFragment extends Fragment {
         llBillsAndFees.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("5");
+                category = "5";
+                binding.tvCategory.setText("Bills and Fees");
                 dialog.dismiss();
             }
         });
@@ -194,6 +198,7 @@ public class ExpensesFragment extends Fragment {
         llEntertainment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                category = "6";
                 binding.tvCategory.setText("6");
                 dialog.dismiss();
             }
@@ -202,7 +207,8 @@ public class ExpensesFragment extends Fragment {
         llVehicle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("7");
+                category = "7";
+                binding.tvCategory.setText("Vehicle");
                 dialog.dismiss();
             }
         });
@@ -210,7 +216,8 @@ public class ExpensesFragment extends Fragment {
         llTravel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("8");
+                category = "8";
+                binding.tvCategory.setText("Travel");
                 dialog.dismiss();
             }
         });
@@ -218,7 +225,8 @@ public class ExpensesFragment extends Fragment {
         llFamilyAndPersonal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("9");
+                category = "9";
+                binding.tvCategory.setText("Family and Personal");
                 dialog.dismiss();
             }
         });
@@ -226,7 +234,8 @@ public class ExpensesFragment extends Fragment {
         llHealthcare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("10");
+                category = "10";
+                binding.tvCategory.setText("Healthcare");
                 dialog.dismiss();
             }
         });
@@ -234,7 +243,8 @@ public class ExpensesFragment extends Fragment {
         llEducation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("11");
+                category = "11";
+                binding.tvCategory.setText("Education");
                 dialog.dismiss();
             }
         });
@@ -242,7 +252,8 @@ public class ExpensesFragment extends Fragment {
         llGroceries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("12");
+                category = "12";
+                binding.tvCategory.setText("Groceries");
                 dialog.dismiss();
             }
         });
@@ -250,7 +261,8 @@ public class ExpensesFragment extends Fragment {
         llGifts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("13");
+                category = "13";
+                binding.tvCategory.setText("Gifts");
                 dialog.dismiss();
             }
         });
@@ -258,7 +270,8 @@ public class ExpensesFragment extends Fragment {
         llSportsAndHobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("14");
+                category = "14";
+                binding.tvCategory.setText("Sport and Hobby");
                 dialog.dismiss();
             }
         });
@@ -266,7 +279,8 @@ public class ExpensesFragment extends Fragment {
         llBeauty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("15");
+                category = "15";
+                binding.tvCategory.setText("Beauty");
                 dialog.dismiss();
             }
         });
@@ -274,7 +288,8 @@ public class ExpensesFragment extends Fragment {
         llWork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("16");
+                category = "16";
+                binding.tvCategory.setText("Work");
                 dialog.dismiss();
             }
         });
@@ -282,7 +297,8 @@ public class ExpensesFragment extends Fragment {
         llPet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("17");
+                category = "17";
+                binding.tvCategory.setText("Pet");
                 dialog.dismiss();
             }
         });
@@ -290,7 +306,8 @@ public class ExpensesFragment extends Fragment {
         llOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("18");
+                category = "18";
+                binding.tvCategory.setText("Other");
                 dialog.dismiss();
             }
         });
@@ -318,17 +335,19 @@ public class ExpensesFragment extends Fragment {
                         binding.etAmount.getEditText().setText("");
                         Toast.makeText(getActivity(), pesan, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getActivity(), pesan + " " + category + type, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), pesan + " " + category, Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
                 } else {
                     Toast.makeText(getActivity(), "Response code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 Toast.makeText(getActivity(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
     }

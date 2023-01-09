@@ -87,7 +87,6 @@ public class IncomesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 type = "incomes";
-                category = binding.tvCategory.getText().toString();
                 note = binding.etNote.getEditText().getText().toString();
                 amount = binding.etAmount.getEditText().getText().toString();
 
@@ -116,7 +115,7 @@ public class IncomesFragment extends Fragment {
 
                     // Tampilkan text pada TextView pada layout progress_dialog
                     TextView tvMessage = dialogView.findViewById(R.id.tv_message);
-                    tvMessage.setText("Saving data...");
+                    tvMessage.setText("Saving data");
 
                     // Buat data setelah dialog ditampilkan
                     createData(dialog);
@@ -143,7 +142,8 @@ public class IncomesFragment extends Fragment {
         llSalary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("1");
+                category = "1";
+                binding.tvCategory.setText("Salary");
                 dialog.dismiss();
             }
         });
@@ -151,7 +151,8 @@ public class IncomesFragment extends Fragment {
         llBusiness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("2");
+                category = "2";
+                binding.tvCategory.setText("Business");
                 dialog.dismiss();
             }
         });
@@ -159,7 +160,8 @@ public class IncomesFragment extends Fragment {
         llGifts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("3");
+                category = "3";
+                binding.tvCategory.setText("Gifts");
                 dialog.dismiss();
             }
         });
@@ -167,7 +169,8 @@ public class IncomesFragment extends Fragment {
         llExtraIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("4");
+                category = "4";
+                binding.tvCategory.setText("Extra Income");
                 dialog.dismiss();
             }
         });
@@ -175,7 +178,8 @@ public class IncomesFragment extends Fragment {
         llLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("5");
+                category = "5";
+                binding.tvCategory.setText("Loan");
                 dialog.dismiss();
             }
         });
@@ -183,7 +187,8 @@ public class IncomesFragment extends Fragment {
         llInvestment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("6");
+                category = "6";
+                binding.tvCategory.setText("Investment");
                 dialog.dismiss();
             }
         });
@@ -191,7 +196,8 @@ public class IncomesFragment extends Fragment {
         llInsurancePayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("7");
+                category = "7";
+                binding.tvCategory.setText("Insurance Payout");
                 dialog.dismiss();
             }
         });
@@ -199,13 +205,14 @@ public class IncomesFragment extends Fragment {
         llOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.tvCategory.setText("8");
+                category = "8";
+                binding.tvCategory.setText("Other");
                 dialog.dismiss();
             }
         });
 
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
@@ -227,17 +234,19 @@ public class IncomesFragment extends Fragment {
                         binding.etAmount.getEditText().setText("");
                         Toast.makeText(getActivity(), pesan, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getActivity(), pesan + " " + category + type, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), pesan + " " + category, Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
                 } else {
                     Toast.makeText(getActivity(), "Response code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 Toast.makeText(getActivity(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
     }

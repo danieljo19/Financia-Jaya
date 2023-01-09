@@ -28,10 +28,7 @@ import com.jaya.financia.R;
 import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityAnalyticBinding;
 
-import java.time.format.DateTimeFormatter;
-import java.time.format.*;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.List;
 
 import retrofit2.Call;
@@ -109,7 +106,6 @@ public class AnalyticActivity extends AppCompatActivity {
         });
 
         retrieveData();
-//        getBarEntries();
         getPieEntries();
         binding.test.setText(String.valueOf(Tot));
 
@@ -138,8 +134,6 @@ public class AnalyticActivity extends AppCompatActivity {
 
         pieDataSet.setValueTextSize(16f);
         pieChart.getDescription().setEnabled(false);
-
-//        binding.test.setText(test);
 
         getSupportActionBar().setTitle("Analytic");
     }
