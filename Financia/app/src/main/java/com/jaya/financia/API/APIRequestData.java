@@ -83,4 +83,11 @@ public interface APIRequestData {
             @Field("email") String email,
             @Field("user_uid") String user_uid
             );
+
+    @FormUrlEncoded
+    @POST("update_user.php")
+    Call<ResponseUser> ardUpdateUser(
+            @Field("id") int id,
+            @Field("name") String name
+    );
 }

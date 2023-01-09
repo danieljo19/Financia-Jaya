@@ -16,6 +16,20 @@
         android:theme="@style/Theme.Material3.DynamicColors.DayNight"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Activities.ChangePasswordActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Activities.EditNameActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activities.SettingActivity"
             android:exported="false">
             <meta-data

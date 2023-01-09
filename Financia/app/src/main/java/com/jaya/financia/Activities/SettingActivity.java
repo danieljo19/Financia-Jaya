@@ -3,6 +3,7 @@ package com.jaya.financia.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,11 +13,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
+import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.Model.ResponseUser;
 import com.jaya.financia.Model.UserModel;
 import com.jaya.financia.R;
 import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivitySettingBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +31,9 @@ public class SettingActivity extends AppCompatActivity {
     ActivitySettingBinding binding;
     private UserModel userModel;
     private FirebaseAuth mAuth;
-    private String user_uid;
+    private String user_uid, name;
+    private int id;
+    private List<UserModel> listUser = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +81,24 @@ public class SettingActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        binding.tvAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getUser();
+            }
+        });
+
+        binding.tvChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingActivity.this, ChangePasswordActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("user_uid", user_uid);
+                intent.putExtra("data", bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     public void getFullName() {
@@ -96,6 +121,34 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseUser> call, Throwable t) {
                 Toast.makeText(SettingActivity.this, "Error Name: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getUser() {
+        APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
+        Call<ResponseUser> getUser = api.ardGetUser(user_uid);
+
+        getUser.enqueue(new Callback<ResponseUser>() {
+            @Override
+            public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
+                listUser = response.body().getData();
+
+                int varId = listUser.get(0).getId();
+                String varName = listUser.get(0).getName();
+
+                Intent intent = new Intent(SettingActivity.this, EditNameActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("xId", varId);
+                bundle.putString("xName", varName);
+                bundle.putString("user_uid", user_uid);
+                intent.putExtra("data", bundle);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseUser> call, Throwable t) {
+                //                Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
             }
         });
     }
