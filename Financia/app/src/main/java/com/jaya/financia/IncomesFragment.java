@@ -1,16 +1,13 @@
 package com.jaya.financia;
 
-import static android.content.Intent.getIntent;
-import static android.content.Intent.getIntentOld;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,14 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
-import com.jaya.financia.Activities.AddActivity;
-import com.jaya.financia.Activities.MainActivity;
 import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.databinding.FragmentIncomesBinding;
 
@@ -110,7 +106,21 @@ public class IncomesFragment extends Fragment {
                     }
                     Toast.makeText(getActivity(), "Please fill all the information.", Toast.LENGTH_SHORT).show();
                 } else {
-                    createData();
+                    // Tampilkan dialog dengan progress bar dan text
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    View dialogView = inflater.inflate(R.layout.progress_dialog, null);
+                    builder.setView(dialogView);
+                    builder.setCancelable(false);
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                    // Tampilkan text pada TextView pada layout progress_dialog
+                    TextView tvMessage = dialogView.findViewById(R.id.tv_message);
+                    tvMessage.setText("Please wait while we are creating your data...");
+
+                    // Buat data setelah dialog ditampilkan
+                    createData(dialog);
                 }
             }
         });
@@ -202,7 +212,7 @@ public class IncomesFragment extends Fragment {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    private void createData() {
+    private void createData(final AlertDialog dialog) {
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
         Call<ResponseModel> buatData = api.ardCreateData(type, category, note, amount, date, user_uid);
 
@@ -220,6 +230,7 @@ public class IncomesFragment extends Fragment {
                     } else {
                         Toast.makeText(getActivity(), pesan + " " + category + type, Toast.LENGTH_SHORT).show();
                     }
+                    dialog.dismiss();
                 } else {
                     Toast.makeText(getActivity(), "Response code: " + response.code(), Toast.LENGTH_SHORT).show();
                 }

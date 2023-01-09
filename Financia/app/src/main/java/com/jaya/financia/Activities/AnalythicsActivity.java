@@ -2,8 +2,10 @@ package com.jaya.financia.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -15,6 +17,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
@@ -54,7 +57,7 @@ public class AnalythicsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private List<DataModel> listData = new ArrayList<>();
-    private String user_uid, type, test ="eek";
+    private String user_uid, type, test ="...";
     private int id;
     private UserModel userModel = new UserModel();
 
@@ -69,6 +72,24 @@ public class AnalythicsActivity extends AppCompatActivity {
 
         binding = ActivityAnalythicsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        binding.bottomNavigation.setSelectedItemId(R.id.item_2);
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.item_1:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        return true;
+                    case R.id.item_2:
+                        return true;
+                    case R.id.item_3:
+                        startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+                        return true;
+                }
+                return false;
+            }
+        });
 
         getBarEntries();
         getPieEntries();

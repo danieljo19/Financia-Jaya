@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
@@ -105,14 +106,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         binding.fabTambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, AddActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("user_uid", user_uid);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//                finish();
-
-                Intent intent = new Intent(MainActivity.this, AnalythicsActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("user_uid", user_uid);
                 intent.putExtra("data", bundle);
@@ -153,6 +147,24 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                     }
                 });
                 popupMenu.show();
+            }
+        });
+
+        binding.bottomNavigation.setSelectedItemId(R.id.item_1);
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.item_1:
+                        return true;
+                    case R.id.item_2:
+                        startActivity(new Intent(getApplicationContext(), AnalythicsActivity.class));
+                        return true;
+                    case R.id.item_3:
+                        startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+                        return true;
+                }
+                return false;
             }
         });
     }
@@ -401,13 +413,13 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                         MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(MainActivity.this)
                                 .setTitle("Confirm")
                                 .setMessage("Are you sure delete data '" + listData.get(position).getNote() + "'?")
-                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         dialogInterface.cancel();
                                     }
                                 })
-                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         deleteData();
