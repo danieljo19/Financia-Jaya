@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
+    android:layout_height="450dp"
     android:layout_gravity="bottom"
     android:background="@drawable/dialog_bg"
     android:orientation="vertical">
@@ -10,16 +10,16 @@
         android:id="@+id/tv_choose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/inter_bold"
         android:text="Incomes"
         android:textAlignment="center"
-        android:textSize="25sp" />
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="32dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -30,14 +30,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/ll_salary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <ImageView
@@ -48,19 +48,21 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="6dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_medium"
                         android:text="Salary"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_business"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="40dp">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="30dp"
@@ -70,20 +72,22 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="6dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_medium"
                         android:text="Business"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
                 </LinearLayout>
 
 
                 <LinearLayout
                     android:id="@+id/ll_gifts"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="30dp">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="30dp"
@@ -93,19 +97,20 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="6dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_medium"
                         android:text="Gifts"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_extraIncome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginLeft="15dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <ImageView
@@ -116,11 +121,12 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="6dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_medium"
-                        android:text="Extra Income"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                        android:text="Extra Inco.."
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -128,15 +134,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="28dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/ll_loan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginLeft="8dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <ImageView
@@ -147,19 +153,21 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="6dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_medium"
                         android:text="Loan"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_investment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="40dp">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="30dp"
@@ -169,20 +177,22 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="6dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_medium"
                         android:text="Investme.."
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
                 </LinearLayout>
 
 
                 <LinearLayout
                     android:id="@+id/ll_insurancePayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="5dp">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="30dp"
@@ -192,34 +202,36 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="6dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_medium"
-                        android:text="Insurance .."
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                        android:text="Insurance.."
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_other"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginLeft="15dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_incomes" />
+                        android:src="@drawable/tic_incomes" />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="6dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_medium"
                         android:text="Other"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
                 </LinearLayout>
 
             </LinearLayout>

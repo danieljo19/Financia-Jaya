@@ -10,4 +10,15 @@
     <color name="neutral_80">#CCFFFFFF</color>
     <color name="neutral_90">#E6FFFFFF</color>
     <color name="neutral_100">#FFFFFFFF</color>
+
+    <color name="neutral_white_10">#1A1A1A1A</color>
+    <color name="neutral_white_20">#331A1A1A</color>
+    <color name="neutral_white_30">#4D1A1A1A</color>
+    <color name="neutral_white_40">#661A1A1A</color>
+    <color name="neutral_white_50">#801A1A1A</color>
+    <color name="neutral_white_60">#991A1A1A</color>
+    <color name="neutral_white_70">#B31A1A1A</color>
+    <color name="neutral_white_80">#CC1A1A1A</color>
+    <color name="neutral_white_90">#E61A1A1A</color>
+    <color name="neutral_white_100">#FF1A1A1A</color>
 </resources>

@@ -4,39 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Activities.AnalythicsActivity">
+    tools:context=".Activities.AnalyticActivity">
 
     <LinearLayout
         android:id="@+id/ll_chart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="16dp"
         android:orientation="vertical">
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/idBarChart"
             android:layout_width="match_parent"
             android:layout_height="315dp" />
+
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/idPieChart"
             android:layout_width="match_parent"
-            android:layout_height="315dp"/>
+            android:layout_height="315dp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_below="@id/ll_chart"
         android:text="lol"
-        android:layout_below="@id/ll_chart"/>
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
 
     <LinearLayout
         android:id="@+id/ll_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_above="@id/test">
+        android:layout_above="@id/test"
+        android:layout_alignParentBottom="true">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"

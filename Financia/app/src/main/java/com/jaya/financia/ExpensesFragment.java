@@ -117,7 +117,7 @@ public class ExpensesFragment extends Fragment {
 
                     // Tampilkan text pada TextView pada layout progress_dialog
                     TextView tvMessage = dialogView.findViewById(R.id.tv_message);
-                    tvMessage.setText("Please wait while we are creating your data...");
+                    tvMessage.setText("Saving data");
 
                     // Buat data setelah dialog ditampilkan
                     createData(dialog);

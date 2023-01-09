@@ -23,9 +23,8 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Activities.AnalythicsActivity"
-            android:exported="false"
-            android:parentActivityName=".Activities.MainActivity">
+            android:name=".Activities.AnalyticActivity"
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

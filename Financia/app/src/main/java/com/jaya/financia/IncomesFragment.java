@@ -6,9 +6,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +14,8 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -117,7 +116,7 @@ public class IncomesFragment extends Fragment {
 
                     // Tampilkan text pada TextView pada layout progress_dialog
                     TextView tvMessage = dialogView.findViewById(R.id.tv_message);
-                    tvMessage.setText("Please wait while we are creating your data...");
+                    tvMessage.setText("Saving data...");
 
                     // Buat data setelah dialog ditampilkan
                     createData(dialog);

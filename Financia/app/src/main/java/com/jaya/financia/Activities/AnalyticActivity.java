@@ -26,18 +26,17 @@ import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.Model.UserModel;
 import com.jaya.financia.R;
 import com.jaya.financia.User;
-import com.jaya.financia.databinding.ActivityAnalythicsBinding;
+import com.jaya.financia.databinding.ActivityAnalyticBinding;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AnalythicsActivity extends AppCompatActivity {
-    ActivityAnalythicsBinding binding;
+public class AnalyticActivity extends AppCompatActivity {
+    ActivityAnalyticBinding binding;
 
     // variable for our bar chart
     BarChart barChart;
@@ -69,22 +68,35 @@ public class AnalythicsActivity extends AppCompatActivity {
         User user = new User();
         user_uid = mAuth.getUid();
 
-
-        binding = ActivityAnalythicsBinding.inflate(getLayoutInflater());
+        binding = ActivityAnalyticBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("data");
+        user_uid = bundle.getString("user_uid");
+
         binding.bottomNavigation.setSelectedItemId(R.id.item_2);
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        binding.bottomNavigation.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
                     case R.id.item_1:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        Intent intentMain = new Intent(AnalyticActivity.this, MainActivity.class);
+                        Bundle bundleMain = new Bundle();
+                        bundleMain.putString("user_uid", user_uid);
+                        intentMain.putExtra("data", bundleMain);
+                        startActivity(intentMain);
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.item_2:
                         return true;
                     case R.id.item_3:
-                        startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+                        Intent intentSetting = new Intent(AnalyticActivity.this, SettingActivity.class);
+                        Bundle bundleSetting = new Bundle();
+                        bundleSetting.putString("user_uid", user_uid);
+                        intentSetting.putExtra("data", bundleSetting);
+                        startActivity(intentSetting);
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;
@@ -122,6 +134,8 @@ public class AnalythicsActivity extends AppCompatActivity {
         pieChart.getDescription().setEnabled(false);
 
 //        binding.test.setText(test);
+
+        getSupportActionBar().setTitle("Analytic");
     }
 
     private void getBarEntries() {
@@ -180,12 +194,11 @@ public class AnalythicsActivity extends AppCompatActivity {
 
                 } else {
                     // Data tidak ditemukan
-
                 }
             }
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(AnalythicsActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AnalyticActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
             }
         });
     }

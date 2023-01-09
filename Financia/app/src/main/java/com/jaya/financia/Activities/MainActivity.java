@@ -1,12 +1,10 @@
 package com.jaya.financia.Activities;
 
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -27,7 +24,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
 import com.jaya.financia.Adapter.DataAdapter;
-import com.jaya.financia.ExpensesFragment;
 import com.jaya.financia.Model.DataModel;
 import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.Model.ResponseUser;
@@ -35,8 +31,6 @@ import com.jaya.financia.Model.UserModel;
 import com.jaya.financia.R;
 import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityMainBinding;
-import com.jaya.financia.databinding.FragmentExpensesBinding;
-import com.jaya.financia.databinding.FragmentIncomesBinding;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -111,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 bundle.putString("user_uid", user_uid);
                 intent.putExtra("data", bundle);
                 startActivity(intent);
-               }
+            }
         });
 
         binding.btnFilter.setOnClickListener(new View.OnClickListener() {
@@ -151,17 +145,27 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         });
 
         binding.bottomNavigation.setSelectedItemId(R.id.item_1);
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        binding.bottomNavigation.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case R.id.item_1:
                         return true;
                     case R.id.item_2:
-                        startActivity(new Intent(getApplicationContext(), AnalythicsActivity.class));
+                        Intent intentAnalytic = new Intent(MainActivity.this, AnalyticActivity.class);
+                        Bundle bundleAnalytic = new Bundle();
+                        bundleAnalytic.putString("user_uid", user_uid);
+                        intentAnalytic.putExtra("data", bundleAnalytic);
+                        startActivity(intentAnalytic);
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.item_3:
-                        startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+                        Intent intentSetting = new Intent(MainActivity.this, SettingActivity.class);
+                        Bundle bundleSetting = new Bundle();
+                        bundleSetting.putString("user_uid", user_uid);
+                        intentSetting.putExtra("data", bundleSetting);
+                        startActivity(intentSetting);
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;
