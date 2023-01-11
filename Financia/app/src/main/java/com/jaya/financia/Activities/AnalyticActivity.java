@@ -1,8 +1,10 @@
 package com.jaya.financia.Activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -10,22 +12,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
-import com.jaya.financia.Model.DataModel;
-import com.jaya.financia.Model.ResponseModel;
-import com.jaya.financia.Model.UserModel;
+import com.jaya.financia.Model.AnalyticExpensesModel;
+import com.jaya.financia.Model.AnalyticIncomesModel;
+import com.jaya.financia.Model.ResponseAnalyticExpenses;
+import com.jaya.financia.Model.ResponseAnalyticIncomes;
 import com.jaya.financia.R;
-import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityAnalyticBinding;
 
 import java.util.ArrayList;
@@ -38,40 +42,24 @@ import retrofit2.Response;
 public class AnalyticActivity extends AppCompatActivity {
     ActivityAnalyticBinding binding;
 
-    // variable for our bar chart
     BarChart barChart;
     PieChart pieChart;
 
-    // variable for our bar data.
-    BarData barData;
-    PieData pieData;
-
-    // variable for our bar data set.
-    BarDataSet barDataSet;
-    PieDataSet pieDataSet;
-
-    // array list for storing entries.
-    ArrayList barEntriesArrayList;
-    ArrayList pieEntriesArrayList;
     private FirebaseAuth mAuth;
-
-    private List<DataModel> listData = new ArrayList<>();
-    private String user_uid, type, test, date, day, dateList, EMonth, EDay, month ="";
-    private int id, size;
-    private int Tot;
-    private int InMoney, OutMoney, tot, totOut = 0;
-    private UserModel userModel = new UserModel();
+    private List<AnalyticIncomesModel> listDataIncomes = new ArrayList<>();
+    private List<AnalyticExpensesModel> listDataExpenses = new ArrayList<>();
+    private String user_uid, month;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        User user = new User();
         user_uid = mAuth.getUid();
 
         binding = ActivityAnalyticBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getSupportActionBar().setTitle("Analytic");
 
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data");
@@ -81,7 +69,7 @@ public class AnalyticActivity extends AppCompatActivity {
         binding.bottomNavigation.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case R.id.item_1:
                         Intent intentMain = new Intent(AnalyticActivity.this, MainActivity.class);
                         Bundle bundleMain = new Bundle();
@@ -105,131 +93,112 @@ public class AnalyticActivity extends AppCompatActivity {
             }
         });
 
-        retrieveData();
-        getPieEntries();
-        binding.test.setText(String.valueOf(Tot));
-
         barChart = binding.idBarChart;
         pieChart = binding.idPieChart;
 
-        barDataSet = new BarDataSet(barEntriesArrayList, "");
-        pieDataSet = new PieDataSet(pieEntriesArrayList, "");
-
-        barData = new BarData(barDataSet);
-        pieData = new PieData(pieDataSet);
-
-        barChart.setData(barData);
-        pieChart.setData(pieData);
-
-        barDataSet.setColors(getResources().getColor(android.R.color.holo_green_dark));
-        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-
-        // setting text color.
-        barDataSet.setValueTextColor(getResources().getColor(android.R.color.holo_green_dark));
-        pieDataSet.setValueTextColor(getResources().getColor(android.R.color.holo_red_light));
-
-        // setting text size
-        barDataSet.setValueTextSize(16f);
-        barChart.getDescription().setEnabled(false);
-
-        pieDataSet.setValueTextSize(16f);
-        pieChart.getDescription().setEnabled(false);
-
-        getSupportActionBar().setTitle("Analytic");
+        retrieveBarChartData();
+        retrievePieChartData();
     }
 
-    private void getBarEntries() {
-        // creating a new array list
-        barEntriesArrayList = new ArrayList<>();
-//        binding.test.setText(String.valueOf(Tot));
-
-
-//         adding new entry to our array list with bar
-//         entry and passing x and y axis value to it.
-//        for (int i = 0; i < size; i++) {
-            barEntriesArrayList.add(new BarEntry(1f, 1));
-//        }
-    }
-
-    private void getPieEntries() {
-        // creating a new array list
-        pieEntriesArrayList = new ArrayList<>();
-
-//         adding new entry to our array list with bar
-//         entry and passing x and y axis value to it.
-        pieEntriesArrayList.add(new PieEntry(1f, 4));
-        pieEntriesArrayList.add(new PieEntry(2f, 6));
-        pieEntriesArrayList.add(new PieEntry(3f, 8));
-        pieEntriesArrayList.add(new PieEntry(4f, 2));
-        pieEntriesArrayList.add(new PieEntry(5f, 4));
-        pieEntriesArrayList.add(new PieEntry(6f, 1));
-    }
-
-    public void retrieveData() {
+    private void retrievePieChartData() {
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
-        Call<ResponseModel> tampilData = api.ardRetrieveData(user_uid);
+        Call<ResponseAnalyticExpenses> tampilData = api.ardGetAnalyticExpensesMonthly(user_uid);
 
-        tampilData.enqueue(new Callback<ResponseModel>() {
+        tampilData.enqueue(new Callback<ResponseAnalyticExpenses>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(Call<ResponseAnalyticExpenses> call, Response<ResponseAnalyticExpenses> response) {
                 int kode = response.body().getKode();
-                String pesan = response.body().getPesan();
-                listData = response.body().getData();
-                size = listData.size();
-//                String test = listData.get(0).getDate();
-//                date = listData.get(0).getDate();
-//                String[] parts = date.split("-");
-//                String month = parts[1];
+                listDataExpenses = response.body().getData();
+                ArrayList<PieEntry> pieEntries = new ArrayList<>();
 
                 if (kode == 1) {
-                    // Data ditemukan
-                    for (int i = 0; i < size; i++){
-                        date = listData.get(i).getDate();
-                        String[] numbah = date.split("-");
-                        day = numbah[0];
-                        month = numbah[1];
-                        for (int a = 0; a < size; a++){
-                           dateList = listData.get(a).getDate();
-                           String[] numbah2 = dateList.split("-");
-                           EMonth = numbah2[1];
-                           type = listData.get(a).getType();
-//                           if (month == "01") {
-                               if (type == "income"){
-                                   InMoney = Integer.parseInt(listData.get(0).getAmount());
-                                   tot = InMoney + tot;
-                                   Tot = tot;
-                               }else {
-                                   OutMoney = Integer.parseInt(listData.get(0).getAmount());
-                                   totOut = totOut - OutMoney;
-                                   Tot = totOut;
-                               }
-//                           } else {
-//                               break;
-//                           }
-                        }
-                        break;
+                    for (int i = 0; i < listDataExpenses.size(); i++) {
+                        AnalyticExpensesModel data = listDataExpenses.get(i);
+                        float amount = Float.parseFloat(data.getTotal());
+                        String category = data.getCategory();
+                        pieEntries.add(new PieEntry(amount, category));
                     }
-                    barEntriesArrayList = new ArrayList<>();
-                    barEntriesArrayList.add(new BarEntry(1f, Tot));
-
-//                    for (DataModel data : listData) {
-//                        String type = data.getType();
-//                        String date = data.getDate();
-//                        String amount = data.getAmount();
-//                        if (type == "Outcome"){
-//                            binding.test.setText("Works");
-//                        }else{
-//                            binding.test.setText("failed");
-//                        }
-//                    }
-
+                    PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
+                    pieDataSet.setValueTextSize(12f);
+                    pieDataSet.setValueFormatter(new PercentFormatter(pieChart));
+                    pieDataSet.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                    PieData pieData = new PieData(pieDataSet);
+                    pieChart.setData(pieData);
+                    pieChart.setUsePercentValues(true);
+                    pieChart.setEntryLabelTextSize(12f);
+                    pieChart.setEntryLabelTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                    pieChart.getDescription().setEnabled(false);
+                    pieChart.setCenterText("Incomes");
+                    pieChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+                    pieChart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+                    pieChart.getLegend().setTextColor(getResources().getColor(R.color.neutral_80));
+                    pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                    pieChart.notifyDataSetChanged();
+                    pieChart.invalidate();
+                    binding.progressBarExpenses.setVisibility(View.GONE);
                 } else {
-                    // Data tidak ditemukan
+                    Toast.makeText(AnalyticActivity.this, "Can't retrieve data. Please try again later.", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(AnalyticActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ResponseAnalyticExpenses> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void retrieveBarChartData() {
+        APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
+        Call<ResponseAnalyticIncomes> tampilData = api.ardGetAnalyticIncomesYearly(user_uid);
+
+        tampilData.enqueue(new Callback<ResponseAnalyticIncomes>() {
+            @Override
+            public void onResponse(Call<ResponseAnalyticIncomes> call, Response<ResponseAnalyticIncomes> response) {
+                int kode = response.body().getKode();
+                listDataIncomes = response.body().getData();
+                ArrayList<BarDataSet> barDataSets = new ArrayList<>();
+                BarData barData = new BarData();
+
+                if (kode == 1) {
+                    String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+                    for (int i = 0; i < listDataIncomes.size(); i++) {
+                        AnalyticIncomesModel data = listDataIncomes.get(i);
+                        Float amount = Float.parseFloat(data.getTotal_incomes());
+                        String month = monthNames[Integer.parseInt(data.getMonth()) - 1];
+                        ArrayList<BarEntry> barEntries = new ArrayList<>();
+                        barEntries.add(new BarEntry(i, amount));
+                        BarDataSet barDataSet = new BarDataSet(barEntries, month);
+                        barDataSet.setColor(getResources().getColor(android.R.color.holo_blue_dark));
+                        barDataSet.setValueTextSize(12f);
+                        barDataSet.setValueTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+                        barData.addDataSet(barDataSet);
+                    }
+                    barChart.setData(barData);
+                    barChart.setPinchZoom(false);
+                    barChart.setDragEnabled(false);
+                    barChart.setScaleEnabled(false);
+                    barChart.setDrawGridBackground(false);
+                    barChart.setDoubleTapToZoomEnabled(false);
+                    barChart.getAxisLeft().setDrawLabels(false);
+                    barChart.getAxisRight().setTextColor(getResources().getColor(R.color.neutral_80));
+                    barChart.getXAxis().setDrawLabels(false);
+                    barChart.getDescription().setEnabled(false);
+                    barChart.notifyDataSetChanged();
+                    barChart.invalidate();
+                    Legend legend = barChart.getLegend();
+                    legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+                    legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+                    legend.setTextColor(getResources().getColor(R.color.neutral_80));
+                    binding.progressBarIncomes.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(AnalyticActivity.this, "Can't retrieve data. Please try again later.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseAnalyticIncomes> call, Throwable t) {
+                Toast.makeText(AnalyticActivity.this, "Failed to connect to the server.", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -1,13 +1,13 @@
 package com.jaya.financia.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -96,7 +96,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(!confirmNewPass.equals(newPass)) {
+                if (!confirmNewPass.equals(newPass)) {
                     binding.etConfirmNewPassword.setError("Password doesn't match!");
                     return;
                 }
@@ -104,7 +104,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 mUser.updatePassword(newPass).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             Intent intent1 = new Intent(ChangePasswordActivity.this, SettingActivity.class);
                             startActivity(intent1);
                             finish();
@@ -117,5 +117,33 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }
         });
 
+        binding.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChangePasswordActivity.this, SettingActivity.class);
+                Bundle bundleSettings = new Bundle();
+                bundleSettings.putString("user_uid", user_uid);
+                intent.putExtra("data", bundleSettings);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ChangePasswordActivity.this, SettingActivity.class);
+        Bundle bundleSettings = new Bundle();
+        bundleSettings.putString("user_uid", user_uid);
+        intent.putExtra("data", bundleSettings);
+        startActivity(intent);
+        finish();
     }
 }

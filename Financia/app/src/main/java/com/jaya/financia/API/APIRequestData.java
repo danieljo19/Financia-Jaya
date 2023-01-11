@@ -1,11 +1,11 @@
 package com.jaya.financia.API;
 
+import com.jaya.financia.Model.ResponseAnalyticExpenses;
+import com.jaya.financia.Model.ResponseAnalyticIncomes;
 import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.Model.ResponseUser;
-import com.jaya.financia.Model.UserModel;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -87,7 +87,7 @@ public interface APIRequestData {
     @FormUrlEncoded
     @POST("update_user.php")
     Call<ResponseUser> ardUpdateUser(
-            @Field("id") int id,
+            @Field("user_uid") String user_uid,
             @Field("name") String name
     );
 
@@ -97,4 +97,12 @@ public interface APIRequestData {
             @Field("id") int id,
             @Field("imageUrl") String imageUrl
     );
+
+    @FormUrlEncoded
+    @POST("analytic_incomes_yearly.php")
+    Call<ResponseAnalyticIncomes> ardGetAnalyticIncomesYearly(@Field("user_uid") String user_uid);
+
+    @FormUrlEncoded
+    @POST("analytic_expenses_monthly.php")
+    Call<ResponseAnalyticExpenses> ardGetAnalyticExpensesMonthly(@Field("user_uid") String user_uid);
 }

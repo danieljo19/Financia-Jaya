@@ -1,7 +1,9 @@
 package com.jaya.financia.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -87,7 +89,7 @@ public class SettingActivity extends AppCompatActivity {
         binding.bottomNavigation.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case R.id.item_1:
                         Intent intentMain = new Intent(SettingActivity.this, MainActivity.class);
                         Bundle bundleMain = new Bundle();
@@ -111,7 +113,7 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        binding.tvAccount.setOnClickListener(new View.OnClickListener() {
+        binding.llAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getUser();
@@ -160,7 +162,7 @@ public class SettingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseUser> call, Throwable t) {
-                Toast.makeText(SettingActivity.this, "Error Name: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -190,8 +192,36 @@ public class SettingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseUser> call, Throwable t) {
-                //                Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, "Failed to connect to the server.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_logout) {
+            logout();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void logout() {
+        mAuth.signOut();
+        // Hapus data email dari shared preferences
+        SharedPreferences sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove("user_email");
+        editor.apply();
+        // Buka activity login
+        startActivity(new Intent(SettingActivity.this, LoginActivity.class));
+        finish();
     }
 }

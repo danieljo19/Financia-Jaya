@@ -17,21 +17,24 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Activities.EditProfileActivity"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".Activities.SettingActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".Activities.ChangePasswordActivity"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".Activities.SettingActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".Activities.EditNameActivity"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".Activities.SettingActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -227,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Failed to connect to the server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -251,14 +250,14 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 if (kode == 1) {
                     binding.tvAmount.setText("Rp" + Tot);
                 } else {
-                    binding.tvAmount.setText("Error");
+                    binding.tvAmount.setText("Rp0");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Failed to connect to the server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -293,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Failed to connect to the server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -328,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Failed to connect to the server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -362,37 +361,9 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Failed to connect to the server.", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            logout();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void logout() {
-        mAuth.signOut();
-        // Hapus data email dari shared preferences
-        SharedPreferences sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.remove("user_email");
-        editor.apply();
-        // Buka activity login
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        finish();
     }
 
     @Override
@@ -468,14 +439,14 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                     }
                 } else {
                     binding.swipeRefresh.setRefreshing(false);
-//                    Toast.makeText(MainActivity.this, "kode : " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Can't retrieve data. Please try again later.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.swipeRefresh.setRefreshing(false);
-//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Failed to connect to the server.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -511,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-//                Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Failed to connect to the server.", Toast.LENGTH_SHORT).show();
             }
         });
     }

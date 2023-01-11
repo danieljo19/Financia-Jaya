@@ -1,16 +1,15 @@
 package com.jaya.financia.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
-import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.Model.ResponseUser;
 import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityEditNameBinding;
@@ -40,10 +39,8 @@ public class EditNameActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Edit Your Name");
 
         Bundle bundle = getIntent().getBundleExtra("data");
-        xId = bundle.getInt("xId");
         xName = bundle.getString("xName");
         user_uid = bundle.getString("user_uid");
-
 
         binding.tvEdit.setText("Hello, " + xName + "!");
         binding.etNama.getEditText().setText(xName);
@@ -51,7 +48,6 @@ public class EditNameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 yName = binding.etNama.getEditText().getText().toString();
-
                 updateUser();
             }
         });
@@ -59,7 +55,7 @@ public class EditNameActivity extends AppCompatActivity {
 
     private void updateUser() {
         APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
-        Call<ResponseUser> updateUser = api.ardUpdateUser(xId, yName);
+        Call<ResponseUser> updateUser = api.ardUpdateUser(user_uid, yName);
 
         updateUser.enqueue(new Callback<ResponseUser>() {
             @Override
@@ -87,5 +83,22 @@ public class EditNameActivity extends AppCompatActivity {
                 Toast.makeText(EditNameActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(EditNameActivity.this, SettingActivity.class);
+        Bundle bundleSettings = new Bundle();
+        bundleSettings.putString("user_uid", user_uid);
+        intent.putExtra("data", bundleSettings);
+        startActivity(intent);
+        finish();
     }
 }
