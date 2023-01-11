@@ -16,6 +16,13 @@
         android:theme="@style/Theme.Material3.DynamicColors.DayNight"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Activities.EditProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activities.ChangePasswordActivity"
             android:exported="false">
             <meta-data
@@ -82,6 +89,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

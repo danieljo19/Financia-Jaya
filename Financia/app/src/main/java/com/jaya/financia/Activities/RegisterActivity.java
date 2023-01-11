@@ -35,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRoot, mRef;
-    private String fullname, email, user_uid;
+    private String fullname, email, user_uid, imageUrl;
     private List<UserModel> listUser = new ArrayList<>();
 
     @Override
@@ -92,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 binding.progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
                                     Toast.makeText(RegisterActivity.this, "Register successfully!", Toast.LENGTH_SHORT).show();
-                                    UserModel user = new UserModel(fullname, email, user_uid);
+                                    UserModel user = new UserModel(fullname, email, user_uid, imageUrl);
                                     String userId = task.getResult().getUser().getUid();
                                     createUser(user.getName(), user.getEmail(), userId);
 //                                    String userId = mAuth.getCurrentUser().getUid();

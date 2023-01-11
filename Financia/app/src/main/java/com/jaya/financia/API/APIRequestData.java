@@ -90,4 +90,11 @@ public interface APIRequestData {
             @Field("id") int id,
             @Field("name") String name
     );
+
+    @FormUrlEncoded
+    @POST("update_image.php")
+    Call<ResponseUser> ardUpdateImage(
+            @Field("id") int id,
+            @Field("imageUrl") String imageUrl
+    );
 }
