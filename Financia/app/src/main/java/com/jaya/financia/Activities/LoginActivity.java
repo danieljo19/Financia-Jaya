@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jaya.financia.databinding.ActivityLoginBinding;
 
+import maes.tech.intentanim.CustomIntent;
+
 public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
     private FirebaseAuth mAuth;
@@ -89,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         // Buka activity utama
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        CustomIntent.customType(LoginActivity.this, "left-to-right");
                         finish();
                     } else {
                         // Login gagal, tampilkan pesan error
@@ -104,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                CustomIntent.customType(LoginActivity.this, "left-to-right");
                 finish();
             }
         });
@@ -113,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
                 startActivity(intent);
+                CustomIntent.customType(LoginActivity.this, "left-to-right");
                 finish();
             }
         });

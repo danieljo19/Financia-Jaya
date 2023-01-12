@@ -28,6 +28,7 @@ import com.jaya.financia.databinding.ActivityEditProfileBinding;
 
 import java.io.ByteArrayOutputStream;
 
+import maes.tech.intentanim.CustomIntent;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -173,6 +174,7 @@ public class EditProfileActivity extends AppCompatActivity {
         bundleSettings.putString("user_uid", user_uid);
         intent.putExtra("data", bundleSettings);
         startActivity(intent);
+        CustomIntent.customType(EditProfileActivity.this, "right-to-left");
         finish();
     }
 }

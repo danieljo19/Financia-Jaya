@@ -14,6 +14,7 @@ import com.jaya.financia.Model.ResponseUser;
 import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityEditNameBinding;
 
+import maes.tech.intentanim.CustomIntent;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,6 +74,7 @@ public class EditNameActivity extends AppCompatActivity {
                     bundle.putString("user_uid", user_uid);
                     intent.putExtra("data", bundle);
                     startActivity(intent);
+                    CustomIntent.customType(EditNameActivity.this, "left-to-right");
                 } else {
                     Toast.makeText(EditNameActivity.this, "Response code: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
@@ -99,6 +101,7 @@ public class EditNameActivity extends AppCompatActivity {
         bundleSettings.putString("user_uid", user_uid);
         intent.putExtra("data", bundleSettings);
         startActivity(intent);
+        CustomIntent.customType(EditNameActivity.this, "right-to-left");
         finish();
     }
 }

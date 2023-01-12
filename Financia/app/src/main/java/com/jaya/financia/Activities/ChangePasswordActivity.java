@@ -17,6 +17,8 @@ import com.google.firebase.auth.GetTokenResult;
 import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityChangePasswordBinding;
 
+import maes.tech.intentanim.CustomIntent;
+
 public class ChangePasswordActivity extends AppCompatActivity {
     ActivityChangePasswordBinding binding;
     private FirebaseAuth mAuth;
@@ -107,6 +109,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Intent intent1 = new Intent(ChangePasswordActivity.this, SettingActivity.class);
                             startActivity(intent1);
+                            CustomIntent.customType(ChangePasswordActivity.this, "left-to-right");
                             finish();
                         } else {
                             String errorMessage = task.getException().getMessage();
@@ -125,6 +128,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 bundleSettings.putString("user_uid", user_uid);
                 intent.putExtra("data", bundleSettings);
                 startActivity(intent);
+                CustomIntent.customType(ChangePasswordActivity.this, "right-to-left");
                 finish();
             }
         });
@@ -144,6 +148,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         bundleSettings.putString("user_uid", user_uid);
         intent.putExtra("data", bundleSettings);
         startActivity(intent);
+        CustomIntent.customType(ChangePasswordActivity.this, "right-to-left");
         finish();
     }
 }

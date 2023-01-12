@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import maes.tech.intentanim.CustomIntent;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -568,6 +569,7 @@ public class EditActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(EditActivity.this, MainActivity.class);
         startActivity(intent);
+        CustomIntent.customType(EditActivity.this, "right-to-left");
         finish();
     }
 }

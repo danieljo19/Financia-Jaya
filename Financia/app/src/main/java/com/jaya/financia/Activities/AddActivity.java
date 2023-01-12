@@ -12,6 +12,8 @@ import com.jaya.financia.IncomesFragment;
 import com.jaya.financia.R;
 import com.jaya.financia.databinding.ActivityAddBinding;
 
+import maes.tech.intentanim.CustomIntent;
+
 public class AddActivity extends AppCompatActivity {
     ActivityAddBinding binding;
     private String user_uid;
@@ -61,6 +63,7 @@ public class AddActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(AddActivity.this, MainActivity.class);
         startActivity(intent);
+        CustomIntent.customType(AddActivity.this, "right-to-left");
         finish();
     }
 }

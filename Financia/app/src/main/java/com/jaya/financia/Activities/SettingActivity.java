@@ -33,6 +33,7 @@ import com.jaya.financia.databinding.ActivitySettingBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+import maes.tech.intentanim.CustomIntent;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,7 +99,7 @@ public class SettingActivity extends AppCompatActivity {
                         bundleMain.putString("user_uid", user_uid);
                         intentMain.putExtra("data", bundleMain);
                         startActivity(intentMain);
-                        overridePendingTransition(0, 0);
+                        CustomIntent.customType(SettingActivity.this, "right-to-left");
                         return true;
                     case R.id.item_2:
                         Intent intentAnalytic = new Intent(SettingActivity.this, AnalyticActivity.class);
@@ -106,7 +107,7 @@ public class SettingActivity extends AppCompatActivity {
                         bundleAnalytic.putString("user_uid", user_uid);
                         intentAnalytic.putExtra("data", bundleAnalytic);
                         startActivity(intentAnalytic);
-                        overridePendingTransition(0, 0);
+                        CustomIntent.customType(SettingActivity.this, "right-to-left");
                         return true;
                     case R.id.item_3:
                         return true;
@@ -158,6 +159,15 @@ public class SettingActivity extends AppCompatActivity {
                         });
                 alert.create();
                 alert.show();
+            }
+        });
+
+        binding.llCredits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentC = new Intent(SettingActivity.this, CreditsActivity.class);
+                startActivity(intentC);
+                CustomIntent.customType(SettingActivity.this, "left-to-right");
             }
         });
     }

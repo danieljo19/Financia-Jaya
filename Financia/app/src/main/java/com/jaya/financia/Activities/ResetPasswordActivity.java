@@ -14,6 +14,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaya.financia.databinding.ActivityResetPasswordBinding;
 
+import maes.tech.intentanim.CustomIntent;
+
 public class ResetPasswordActivity extends AppCompatActivity {
     ActivityResetPasswordBinding binding;
     private FirebaseAuth mAuth;
@@ -59,6 +61,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent= new Intent(ResetPasswordActivity.this, LoginActivity.class);
                 startActivity(intent);
+                CustomIntent.customType(ResetPasswordActivity.this, "right-to-left");
                 finish();
             }
         });
@@ -75,6 +78,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
         startActivity(intent);
+        CustomIntent.customType(ResetPasswordActivity.this, "right-to-left");
         finish();
     }
 }

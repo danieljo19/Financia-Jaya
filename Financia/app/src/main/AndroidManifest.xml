@@ -16,6 +16,13 @@
         android:theme="@style/Theme.Material3.DynamicColors.DayNight"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Activities.CreditsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activities.EditProfileActivity"
             android:exported="false"
             android:parentActivityName=".Activities.SettingActivity">

@@ -26,6 +26,7 @@ import com.jaya.financia.databinding.ActivityRegisterBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+import maes.tech.intentanim.CustomIntent;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -102,6 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                             .class);
                                     startActivity(intent);
+                                    CustomIntent.customType(RegisterActivity.this, "left-to-right");
                                     finish();
                                 } else {
                                     Toast.makeText(RegisterActivity.this, "Register failed!", Toast.LENGTH_SHORT).show();
@@ -116,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
+                CustomIntent.customType(RegisterActivity.this, "left-to-right");
                 finish();
             }
         });
@@ -150,6 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
+        CustomIntent.customType(RegisterActivity.this, "right-to-left");
         finish();
     }
 }

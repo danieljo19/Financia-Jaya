@@ -37,6 +37,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
+import maes.tech.intentanim.CustomIntent;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
         if (mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
+            CustomIntent.customType(MainActivity.this, "right-to-left");
             finish();
         } else {
             SharedPreferences sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE);
@@ -103,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                 Bundle bundle = new Bundle();
                 bundle.putString("user_uid", user_uid);
                 intent.putExtra("data", bundle);
+                CustomIntent.customType(MainActivity.this, "left-to-right");
                 startActivity(intent);
             }
         });
@@ -156,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                         bundleAnalytic.putString("user_uid", user_uid);
                         intentAnalytic.putExtra("data", bundleAnalytic);
                         startActivity(intentAnalytic);
-                        overridePendingTransition(0, 0);
+                        CustomIntent.customType(MainActivity.this, "left-to-right");
                         return true;
                     case R.id.item_3:
                         Intent intentSetting = new Intent(MainActivity.this, SettingActivity.class);
@@ -164,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                         bundleSetting.putString("user_uid", user_uid);
                         intentSetting.putExtra("data", bundleSetting);
                         startActivity(intentSetting);
-                        overridePendingTransition(0, 0);
+                        CustomIntent.customType(MainActivity.this, "left-to-right");
                         return true;
                 }
                 return false;
