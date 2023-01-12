@@ -1,13 +1,13 @@
 package com.jaya.financia.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,10 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jaya.financia.API.APIRequestData;
 import com.jaya.financia.API.RetroServer;
-import com.jaya.financia.Model.ResponseModel;
 import com.jaya.financia.Model.ResponseUser;
 import com.jaya.financia.Model.UserModel;
-import com.jaya.financia.User;
 import com.jaya.financia.databinding.ActivityRegisterBinding;
 
 import java.util.ArrayList;
@@ -93,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 binding.progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
                                     Toast.makeText(RegisterActivity.this, "Register successfully!", Toast.LENGTH_SHORT).show();
-                                    UserModel user = new UserModel(fullname, email, user_uid, imageUrl);
+                                    UserModel user = new UserModel(fullname, email, user_uid);
                                     String userId = task.getResult().getUser().getUid();
                                     createUser(user.getName(), user.getEmail(), userId);
 //                                    String userId = mAuth.getCurrentUser().getUid();

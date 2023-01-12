@@ -2,6 +2,7 @@ package com.jaya.financia.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -110,6 +111,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             Intent intent1 = new Intent(ChangePasswordActivity.this, SettingActivity.class);
                             startActivity(intent1);
                             CustomIntent.customType(ChangePasswordActivity.this, "left-to-right");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    finish();
+                                }
+                            }, 500);
                             finish();
                         } else {
                             String errorMessage = task.getException().getMessage();
@@ -129,7 +136,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 intent.putExtra("data", bundleSettings);
                 startActivity(intent);
                 CustomIntent.customType(ChangePasswordActivity.this, "right-to-left");
-                finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 500);
             }
         });
     }

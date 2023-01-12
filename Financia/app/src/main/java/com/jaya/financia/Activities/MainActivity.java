@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                         bundleAnalytic.putString("user_uid", user_uid);
                         intentAnalytic.putExtra("data", bundleAnalytic);
                         startActivity(intentAnalytic);
-                        CustomIntent.customType(MainActivity.this, "left-to-right");
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.item_3:
                         Intent intentSetting = new Intent(MainActivity.this, SettingActivity.class);
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter.OnIte
                         bundleSetting.putString("user_uid", user_uid);
                         intentSetting.putExtra("data", bundleSetting);
                         startActivity(intentSetting);
-                        CustomIntent.customType(MainActivity.this, "left-to-right");
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;

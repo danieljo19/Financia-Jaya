@@ -5,16 +5,14 @@ public class UserModel {
     private String name;
     private String email;
     private String user_uid;
-    private String imageUrl;
 
     public UserModel() {
     }
 
-    public UserModel(String name, String email, String user_uid, String imageUrl) {
+    public UserModel(String name, String email, String user_uid) {
         this.name = name;
         this.email = email;
         this.user_uid = user_uid;
-        this.imageUrl = imageUrl;
     }
 
     public int getId() {
@@ -49,11 +47,4 @@ public class UserModel {
         this.user_uid = user_uid;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 }

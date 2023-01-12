@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -73,11 +72,11 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel user = dataSnapshot.getValue(UserModel.class);
-                if (user.getImageUrl() != null) {
-                    Glide.with(SettingActivity.this)
-                            .load(user.getImageUrl())
-                            .into(binding.civProfileImage);
-                }
+//                if (user.getImageUrl() != null) {
+//                    Glide.with(SettingActivity.this)
+//                            .load(user.getImageUrl())
+//                            .into(binding.civProfileImage);
+//                }
                 Toast.makeText(SettingActivity.this, "Berhasil upload", Toast.LENGTH_SHORT).show();
             }
 
@@ -99,7 +98,7 @@ public class SettingActivity extends AppCompatActivity {
                         bundleMain.putString("user_uid", user_uid);
                         intentMain.putExtra("data", bundleMain);
                         startActivity(intentMain);
-                        CustomIntent.customType(SettingActivity.this, "right-to-left");
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.item_2:
                         Intent intentAnalytic = new Intent(SettingActivity.this, AnalyticActivity.class);
@@ -107,7 +106,7 @@ public class SettingActivity extends AppCompatActivity {
                         bundleAnalytic.putString("user_uid", user_uid);
                         intentAnalytic.putExtra("data", bundleAnalytic);
                         startActivity(intentAnalytic);
-                        CustomIntent.customType(SettingActivity.this, "right-to-left");
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.item_3:
                         return true;
@@ -207,13 +206,11 @@ public class SettingActivity extends AppCompatActivity {
 
                 int varId = listUser.get(0).getId();
                 String varName = listUser.get(0).getName();
-                String varImage = listUser.get(0).getImageUrl();
 
                 Intent intent = new Intent(SettingActivity.this, EditNameActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("xId", varId);
                 bundle.putString("xName", varName);
-                bundle.putString("xImage", varImage);
                 bundle.putString("user_uid", user_uid);
                 intent.putExtra("data", bundle);
                 startActivity(intent);

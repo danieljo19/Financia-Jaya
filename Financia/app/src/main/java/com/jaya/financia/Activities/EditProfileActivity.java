@@ -21,17 +21,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.jaya.financia.API.APIRequestData;
-import com.jaya.financia.API.RetroServer;
-import com.jaya.financia.Model.ResponseUser;
 import com.jaya.financia.databinding.ActivityEditProfileBinding;
 
 import java.io.ByteArrayOutputStream;
 
 import maes.tech.intentanim.CustomIntent;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class EditProfileActivity extends AppCompatActivity {
     ActivityEditProfileBinding binding;
@@ -105,7 +99,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Gambar berhasil disimpan ke Firebase Storage
                         yImage = imageRef.toString();
-                        updateImage();
+//                        updateImage();
 
                         Toast.makeText(EditProfileActivity.this, "Succes Add Profile", Toast.LENGTH_SHORT).show();
                     }
@@ -128,37 +122,37 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void updateImage() {
-        APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
-        Call<ResponseUser> updateImage = api.ardUpdateImage(xId, yImage);
-
-        updateImage.enqueue(new Callback<ResponseUser>() {
-            @Override
-            public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
-                if (response.code() == 200) {
-                    int kode = response.body().getKode();
-                    String pesan = response.body().getPesan();
-                    if (kode == 1) {
-                        Toast.makeText(EditProfileActivity.this, pesan, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(EditProfileActivity.this, pesan, Toast.LENGTH_SHORT).show();
-                    }
-                    Intent intent = new Intent(EditProfileActivity.this, SettingActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("user_uid", user_uid);
-                    intent.putExtra("data", bundle);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(EditProfileActivity.this, "Response code: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseUser> call, Throwable t) {
-                Toast.makeText(EditProfileActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void updateImage() {
+//        APIRequestData api = RetroServer.konekRetrofit().create(APIRequestData.class);
+//        Call<ResponseUser> updateImage = api.ardUpdateImage(xId, yImage);
+//
+//        updateImage.enqueue(new Callback<ResponseUser>() {
+//            @Override
+//            public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
+//                if (response.code() == 200) {
+//                    int kode = response.body().getKode();
+//                    String pesan = response.body().getPesan();
+//                    if (kode == 1) {
+//                        Toast.makeText(EditProfileActivity.this, pesan, Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(EditProfileActivity.this, pesan, Toast.LENGTH_SHORT).show();
+//                    }
+//                    Intent intent = new Intent(EditProfileActivity.this, SettingActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("user_uid", user_uid);
+//                    intent.putExtra("data", bundle);
+//                    startActivity(intent);
+//                } else {
+//                    Toast.makeText(EditProfileActivity.this, "Response code: " + response.code(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseUser> call, Throwable t) {
+//                Toast.makeText(EditProfileActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {

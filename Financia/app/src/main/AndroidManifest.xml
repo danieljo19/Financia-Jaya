@@ -17,6 +17,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Activities.CreditsActivity"
+            android:parentActivityName=".Activities.SettingActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

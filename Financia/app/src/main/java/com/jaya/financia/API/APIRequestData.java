@@ -92,13 +92,6 @@ public interface APIRequestData {
     );
 
     @FormUrlEncoded
-    @POST("update_image.php")
-    Call<ResponseUser> ardUpdateImage(
-            @Field("id") int id,
-            @Field("imageUrl") String imageUrl
-    );
-
-    @FormUrlEncoded
     @POST("analytic_incomes_yearly.php")
     Call<ResponseAnalyticIncomes> ardGetAnalyticIncomesYearly(@Field("user_uid") String user_uid);
 

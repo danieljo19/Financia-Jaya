@@ -35,7 +35,6 @@ import com.jaya.financia.databinding.ActivityAnalyticBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-import maes.tech.intentanim.CustomIntent;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,7 +76,7 @@ public class AnalyticActivity extends AppCompatActivity {
                         bundleMain.putString("user_uid", user_uid);
                         intentMain.putExtra("data", bundleMain);
                         startActivity(intentMain);
-                        CustomIntent.customType(AnalyticActivity.this, "right-to-left");
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.item_2:
                         return true;
@@ -87,7 +86,7 @@ public class AnalyticActivity extends AppCompatActivity {
                         bundleSetting.putString("user_uid", user_uid);
                         intentSetting.putExtra("data", bundleSetting);
                         startActivity(intentSetting);
-                        CustomIntent.customType(AnalyticActivity.this, "left-to-right");
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;

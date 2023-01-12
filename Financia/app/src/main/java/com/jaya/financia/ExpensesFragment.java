@@ -199,7 +199,7 @@ public class ExpensesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 category = "6";
-                binding.tvCategory.setText("6");
+                binding.tvCategory.setText("Entertainment");
                 dialog.dismiss();
             }
         });
