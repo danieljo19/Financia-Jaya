@@ -129,7 +129,7 @@ public class AnalyticActivity extends AppCompatActivity {
                     pieChart.setEntryLabelTextSize(12f);
                     pieChart.setEntryLabelTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                     pieChart.getDescription().setEnabled(false);
-                    pieChart.setCenterText("Incomes");
+                    pieChart.setCenterText("Expenses");
                     pieChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
                     pieChart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
                     pieChart.getLegend().setTextColor(getResources().getColor(R.color.neutral_80));
