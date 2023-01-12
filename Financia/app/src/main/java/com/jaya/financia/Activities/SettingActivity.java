@@ -1,5 +1,6 @@
 package com.jaya.financia.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -139,6 +141,23 @@ public class SettingActivity extends AppCompatActivity {
                 bundle.putString("user_uid", user_uid);
                 intent.putExtra("data", bundle);
                 startActivity(intent);
+            }
+        });
+
+        binding.llLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(SettingActivity.this)
+                        .setTitle("Get Ready")
+                        .setMessage("Something really cool is coming!")
+                        .setNegativeButton("Got it", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                alert.create();
+                alert.show();
             }
         });
     }
